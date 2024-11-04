@@ -12,7 +12,9 @@ from zerolan.data.data.img_cap import ImgCapQuery
 class ImgCapApplication(AbstractApplication):
 
     def __init__(self, model: AbstractModel, host: str, port: int):
-        super().__init__()
+        super().__init__("image-captioning")
+        self.host = host
+        self.port = port
         self._app = Flask(__name__)
         # Warning: Here! Compatible with legacy APIs.
         self._app.add_url_rule(rule='/image-captioning/predict', view_func=self._handle_predict,

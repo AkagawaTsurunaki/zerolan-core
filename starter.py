@@ -5,12 +5,8 @@ import yaml
 from common.abs_app import AbstractApplication
 
 parser = argparse.ArgumentParser()
-parser.add_argument('config', type=str)
-parser.add_argument('asr', type=str)
-parser.add_argument('llm', type=str)
-parser.add_argument('imgcap', type=str)
-parser.add_argument('ocr', type=str)
-parser.add_argument('tts', type=str)
+parser.add_argument('service', type=str)
+parser.add_argument('--config', type=str)
 args = parser.parse_args()
 
 
@@ -23,10 +19,11 @@ def load_config():
 _config = load_config()
 
 
-def asr_app(asr_id) -> AbstractApplication:
+def asr_app() -> AbstractApplication:
     from asr.app import ASRApplication
 
     asr_config = _config["ASR"]
+    asr_id = asr_config["id"]
     model_cfg = asr_config["config"][asr_id]
 
     def get_model():
@@ -42,10 +39,11 @@ def asr_app(asr_id) -> AbstractApplication:
     return app
 
 
-def llm_app(llm_id) -> AbstractApplication:
+def llm_app() -> AbstractApplication:
     from llm.app import LLMApplication
 
     llm_config = _config["LLM"]
+    llm_id = llm_config["id"]
     model_cfg = llm_config["config"][llm_id]
 
     def get_model():
@@ -73,10 +71,11 @@ def llm_app(llm_id) -> AbstractApplication:
     return app
 
 
-def imgcap_app(imgcap_id) -> AbstractApplication:
+def imgcap_app() -> AbstractApplication:
     from img_cap.app import ImgCapApplication
 
     imgcap_config = _config["ImgCap"]
+    imgcap_id = imgcap_config["id"]
     model_cfg = imgcap_config["config"][imgcap_id]
 
     def get_model():
@@ -88,14 +87,15 @@ def imgcap_app(imgcap_id) -> AbstractApplication:
             raise NameError(f"No such model name (id) {imgcap_id}")
 
     imgcap = get_model()
-    app = ImgCapApplication(model=imgcap, host=model_cfg["host"], port=model_cfg["port"])
+    app = ImgCapApplication(model=imgcap, host=imgcap_config["host"], port=imgcap_config["port"])
     return app
 
 
-def ocr_app(ocr_id) -> AbstractApplication:
+def ocr_app() -> AbstractApplication:
     from ocr.app import OCRApplication
 
     ocr_config = _config["OCR"]
+    ocr_id = ocr_config['id']
     model_cfg = ocr_config["config"][ocr_id]
 
     def get_model():
@@ -111,10 +111,11 @@ def ocr_app(ocr_id) -> AbstractApplication:
     return app
 
 
-def tts_app(tts_id) -> AbstractApplication:
+def tts_app() -> AbstractApplication:
     from tts.app import TTSApplication
 
     tts_config = _config["TTS"]
+    tts_id = tts_config["id"]
     model_cfg = tts_config["config"][tts_id]
 
     def get_model():
@@ -128,17 +129,19 @@ def tts_app(tts_id) -> AbstractApplication:
 
 
 def run():
+    service = args.service
+    print(service)
     def get_app():
-        if args.asr is not None:
-            return asr_app(args.asr)
-        elif args.llm is not None:
-            return llm_app(args.llm)
-        elif args.imgcap is not None:
-            return imgcap_app(args.imgcap)
-        elif args.ocr is not None:
-            return ocr_app(args.ocr)
-        elif args.tts is not None:
-            return tts_app(args.tts)
+        if "asr" == service:
+            return asr_app()
+        elif "llm" == service:
+            return llm_app()
+        elif "imgcap" == service:
+            return imgcap_app()
+        elif "ocr" == service:
+            return ocr_app()
+        elif "tts" == service:
+            return tts_app()
 
     app = get_app()
     app.run()

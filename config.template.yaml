@@ -5,56 +5,57 @@ ASR:
   host: "127.0.0.1" # Host of the API service you want to start
   port: 11001 # Port of the API service you want to start  
   config:
-    - iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1:
-        chunk_size: [0, 10, 5]  # [0, 10, 5] 600ms, [0, 8, 4] 480ms
-        encoder_chunk_look_back: 4  # Number of chunks to lookback for encoder self-attention
-        decoder_chunk_look_back: 1  # Number of encoder chunks to lookback for decoder cross-attention
-        version: "v2.0.4" # Paraformer version
-        chunk_stride: 9600  # chunk_size[1] * 960
+    iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1:
+      model_path: "iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1" # Directory of the model
+      chunk_size: [0, 10, 5]  # [0, 10, 5] 600ms, [0, 8, 4] 480ms
+      encoder_chunk_look_back: 4  # Number of chunks to lookback for encoder self-attention
+      decoder_chunk_look_back: 1  # Number of encoder chunks to lookback for decoder cross-attention
+      version: "v2.0.4" # Paraformer version
+      chunk_stride: 9600  # chunk_size[1] * 960
 
 LLM:
   id: "THUDM/chatglm3-6b" # The model you want to use
   host: "127.0.0.1" # Host of the API service you want to start
   port: 11002 # Port of the API service you want to start
   config:
-    - THUDM/chatglm3-6b:
-        model_path: "THUDM/chatglm3-6b" # Directory of the model
-        quantize: null  # null | 4 | 8
-        device: "cuda" # Device to run the model
-    - Qwen/Qwen-7B-Chat:
-        model_path: "Qwen/Qwen-7B-Chat" # Directory of the model
-        quantize: null  # null | 4 | 8
-        device: "cuda" # Device to run the model
-        precise: null # "bf16" | "fp16"
-    - augmxnt/shisa-7b-v1:
-        model_path: "augmxnt/shisa-7b-v1" # Directory of the model
-        device: "cuda" # Device to run the model
-    - 01-ai/Yi-6B-Chat:
-        model_path: "01-ai/Yi-6B-Chat" # Directory of the model
-        device: "cuda" # Device to run the model
+    THUDM/chatglm3-6b:
+      model_path: "THUDM/chatglm3-6b" # Directory of the model
+      quantize: null  # null | 4 | 8
+      device: "cuda" # Device to run the model
+    Qwen/Qwen-7B-Chat:
+      model_path: "Qwen/Qwen-7B-Chat" # Directory of the model
+      quantize: null  # null | 4 | 8
+      device: "cuda" # Device to run the model
+      precise: null # "bf16" | "fp16"
+    augmxnt/shisa-7b-v1:
+      model_path: "augmxnt/shisa-7b-v1" # Directory of the model
+      device: "cuda" # Device to run the model
+    01-ai/Yi-6B-Chat:
+      model_path: "01-ai/Yi-6B-Chat" # Directory of the model
+      device: "cuda" # Device to run the model
 
 ImgCap:
   id: "Salesforce/blip-image-captioning-large" # The model you want to use
   host: "127.0.0.1" # Host of the API service you want to start
   port: 11003 # Port of the API service you want to start  
   config:
-    - Salesforce/blip-image-captioning-large:
-        model_path: "Salesforce/blip-image-captioning-large" # Directory of the model
-        device: "cuda" # Device to run the model
+    Salesforce/blip-image-captioning-large:
+      model_path: "Salesforce/blip-image-captioning-large" # Directory of the model
+      device: "cuda" # Device to run the model
 
 OCR:
   id: "paddlepaddle/PaddleOCR" # The model you want to use
   host: "127.0.0.1" # Host of the API service you want to start
   port: 11004 # Port of the API service you want to start
   config:
-    - paddlepaddle/PaddleOCR:
-        model_path: "Salesforce/blip-image-captioning-large" # Directory of the model
-        lang: "ch" # Language ["ch", "en", "fr", "german", "korean", "japan"]
+    paddlepaddle/PaddleOCR:
+      model_path: "paddlepaddle/PaddleOCR" # Directory of the model
+      lang: "ch" # Language ["ch", "en", "fr", "german", "korean", "japan"]
 
 TTS:
   id: "AkagawaTsurunaki/GPT-SoVITS" # The model you want to use
   host: "127.0.0.1" # Host of the API service you want to start
   port: 11005 # Port of the API service you want to start
   config:
-    - AkagawaTsurunaki/GPT-SoVITS:
-        # Under developing for quick installing
+    AkagawaTsurunaki/GPT-SoVITS:
+      # Under developing for quick installing
