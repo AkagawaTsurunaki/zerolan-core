@@ -5,12 +5,12 @@ import yaml
 from common.abs_app import AbstractApplication
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--config', type=str)
-parser.add_argument('--asr', type=str)
-parser.add_argument('--llm', type=str)
-parser.add_argument('--imgcap', type=str)
-parser.add_argument('--ocr', type=str)
-parser.add_argument('--tts', type=str)
+parser.add_argument('config', type=str)
+parser.add_argument('asr', type=str)
+parser.add_argument('llm', type=str)
+parser.add_argument('imgcap', type=str)
+parser.add_argument('ocr', type=str)
+parser.add_argument('tts', type=str)
 args = parser.parse_args()
 
 
