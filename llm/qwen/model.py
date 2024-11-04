@@ -11,7 +11,7 @@ from common.decorator import log_model_loading
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from llm.qwen.config import QwenModelConfig
-from zerolan_live_robot_data.data.llm import LLMQuery, LLMPrediction, Conversation
+from zerolan.data.data.llm import LLMQuery, LLMPrediction, Conversation
 
 
 class Qwen7BChat(AbstractModel):
@@ -52,9 +52,9 @@ class Qwen7BChat(AbstractModel):
         """
         Predict tokens based on history and query from LLM.
         Args:
-            llm_query: See zerolan_live_robot_data.data.llm.LLMQuery
+            llm_query: See zerolan.data.data.llm.LLMQuery
 
-        Returns: See zerolan_live_robot_data.data.llm.LLMPrediction
+        Returns: See zerolan.data.data.llm.LLMPrediction
 
         """
         text, history, sys_prompt = self._to_qwen_format(llm_query)
@@ -66,9 +66,9 @@ class Qwen7BChat(AbstractModel):
         """
         Stream predict tokens based on history and query from LLM.
         Args:
-            llm_query: See zerolan_live_robot_data.data.llm.LLMQuery
+            llm_query: See zerolan.data.data.llm.LLMQuery
 
-        Returns: See zerolan_live_robot_data.data.llm.LLMPrediction
+        Returns: See zerolan.data.data.llm.LLMPrediction
 
         """
         text, history, sys_prompt = self._to_qwen_format(llm_query)

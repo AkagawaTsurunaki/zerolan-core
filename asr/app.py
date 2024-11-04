@@ -3,7 +3,7 @@ from loguru import logger
 
 from common.abs_app import AbstractApplication
 from utils import audio_util, file_util, web_util
-from zerolan_live_robot_data.data.asr import ASRModelQuery, ASRModelStreamQuery
+from zerolan.data.data.asr import ASRModelQuery, ASRModelStreamQuery
 
 
 class ASRApplication(AbstractApplication):

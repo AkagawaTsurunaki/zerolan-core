@@ -8,7 +8,7 @@ from paddleocr import PaddleOCR
 
 from common.abs_model import AbstractModel
 from common.decorator import log_model_loading
-from zerolan_live_robot_data.data.ocr import OCRQuery, OCRPrediction, Vector2D, Position, RegionResult
+from zerolan.data.data.ocr import OCRQuery, OCRPrediction, Vector2D, Position, RegionResult
 
 
 class PaddleOCRModel(AbstractModel):

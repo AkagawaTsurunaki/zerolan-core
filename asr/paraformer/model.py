@@ -10,7 +10,7 @@ from loguru import logger
 
 from utils import audio_util
 from common.decorator import log_model_loading
-from zerolan_live_robot_data.data.asr import ASRModelPrediction, ASRModelQuery, ASRModelStreamQuery
+from zerolan.data.data.asr import ASRModelPrediction, ASRModelQuery, ASRModelStreamQuery
 
 
 class SpeechParaformerModel:

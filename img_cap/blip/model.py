@@ -12,7 +12,7 @@ from transformers import BlipProcessor, BlipForConditionalGeneration
 from common.abs_model import AbstractModel
 from common.decorator import log_model_loading
 from ocr.paddle.config import PaddleOCRModelConfig
-from zerolan_live_robot_data.data.img_cap import ImgCapQuery, ImgCapPrediction
+from zerolan.data.data.img_cap import ImgCapQuery, ImgCapPrediction
 
 
 class BlipImageCaptioningLarge(AbstractModel):

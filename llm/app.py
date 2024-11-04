@@ -5,7 +5,7 @@ from loguru import logger
 
 from common.abs_app import AbstractApplication
 from common.abs_model import AbstractModel
-from zerolan_live_robot_data.data.llm import LLMQuery
+from zerolan.data.data.llm import LLMQuery
 
 
 class LLMApplication(AbstractApplication):
