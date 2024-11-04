@@ -54,7 +54,7 @@ OCR:
 TTS:
   id: "AkagawaTsurunaki/GPT-SoVITS" # The model you want to use
   host: "127.0.0.1" # Host of the API service you want to start
-  port: 11004 # Port of the API service you want to start
+  port: 11005 # Port of the API service you want to start
   config:
     - AkagawaTsurunaki/GPT-SoVITS:
         # Under developing for quick installing
