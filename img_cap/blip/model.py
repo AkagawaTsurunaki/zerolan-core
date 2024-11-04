@@ -8,16 +8,16 @@ from typing import Any
 import torch
 from PIL import Image
 from transformers import BlipProcessor, BlipForConditionalGeneration
+from zerolan.data.data.img_cap import ImgCapQuery, ImgCapPrediction
 
 from common.abs_model import AbstractModel
 from common.decorator import log_model_loading
-from ocr.paddle.config import PaddleOCRModelConfig
-from zerolan.data.data.img_cap import ImgCapQuery, ImgCapPrediction
+from img_cap.blip.config import BlipModelConfig
 
 
 class BlipImageCaptioningLarge(AbstractModel):
 
-    def __init__(self, config: PaddleOCRModelConfig):
+    def __init__(self, config: BlipModelConfig):
         super().__init__()
         self.model_id = "Salesforce/blip-image-captioning-large"
         self._lang = 'en'

@@ -12,10 +12,10 @@ from common.abs_model import AbstractModel
 class GPT_SoVITS(AbstractModel):
     def __init__(self):
         super().__init__()
-        self.model_id = "RVC-Boss/GPT-SoVITS"
+        self.model_id = "AkagawaTsurunaki/GPT-SoVITS"
 
     def load_model(self):
-        logger.warning("RVC-Boss/GPT-SoVITS")
+        logger.warning("AkagawaTsurunaki/GPT-SoVITS")
 
     def predict(self, *args, **kwargs) -> Any:
         raise NotImplementedError("You should not call this method!")

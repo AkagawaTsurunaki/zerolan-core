@@ -5,18 +5,20 @@ More details about the model:
 from typing import Any
 
 from paddleocr import PaddleOCR
+from zerolan.data.data.ocr import OCRQuery, OCRPrediction, Vector2D, Position, RegionResult
 
 from common.abs_model import AbstractModel
 from common.decorator import log_model_loading
-from zerolan.data.data.ocr import OCRQuery, OCRPrediction, Vector2D, Position, RegionResult
+from ocr.paddle.config import PaddleOCRModelConfig
 
 
 class PaddleOCRModel(AbstractModel):
 
-    def __init__(self):
+    def __init__(self, config: PaddleOCRModelConfig):
         super().__init__()
         # Supported languages: `ch`, `en`, `fr`, `german`, `korean`, `japan`
-        self.lang = "ch"
+        self._model_path = config.model_path
+        self.lang = config.lang
         self.model = None
 
     @log_model_loading("paddlepaddle/PaddleOCR")
