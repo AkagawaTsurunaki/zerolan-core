@@ -1,0 +1,11 @@
+loguru==0.7.2
+flask==3.0.3
+dataclasses-json==0.6.7
+
+torch==2.3.1+cu121
+# transformers of newer version will raise errors
+transformers==4.41.2
+
+sentencepiece==0.2.0
+# numpy of newer version will raise errors.
+numpy==1.26.4
