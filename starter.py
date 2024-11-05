@@ -142,7 +142,7 @@ def get_app(service):
 def run(service=None):
     service = args.service if service is None else service
     print(service)
-    app = get_app()
+    app = get_app(service)
     app.run()
 
 
