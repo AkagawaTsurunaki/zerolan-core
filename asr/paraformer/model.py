@@ -8,6 +8,7 @@ from funasr import AutoModel
 from loguru import logger
 
 
+from asr.paraformer.config import SpeechParaformerModelConfig
 from utils import audio_util
 from common.decorator import log_model_loading
 from zerolan.data.data.asr import ASRModelPrediction, ASRModelQuery, ASRModelStreamQuery
@@ -15,7 +16,7 @@ from zerolan.data.data.asr import ASRModelPrediction, ASRModelQuery, ASRModelStr
 
 class SpeechParaformerModel:
 
-    def __init__(self, config):
+    def __init__(self, config: SpeechParaformerModelConfig):
         self.model_id = "iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1"
         self._model: any = None
         # Streaming Inference Configuration
