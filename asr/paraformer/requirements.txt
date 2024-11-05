@@ -1,9 +1,7 @@
-loguru==0.7.2
-flask==3.0.3
-dataclasses-json==0.6.7
-
-torch==2.3.1+cu121
-# # numpy of newer version will raise errors.
+# Tested only on this version, other versions are unknown
+# 2.3.1+cu121
+torch
+# numpy of newer version will raise errors.
 numpy==1.26.4
 
 funasr==1.1.4
