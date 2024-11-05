@@ -65,3 +65,7 @@ RUN cd /workspace/services/zerolan-core && \
 RUN cd /workspace/services/zerolan-core && \
     pip install -r ./asr/paraformer/requirements.txt
 
+RUN apt-get install ffmpeg -y
+
+RUN cd /workspace/services/zerolan-core && \
+    cp config.template.yaml config.yaml
