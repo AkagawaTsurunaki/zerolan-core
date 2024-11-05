@@ -8,7 +8,7 @@ from zerolan.data.data.asr import ASRModelQuery, ASRModelStreamQuery
 
 class ASRApplication(AbstractApplication):
     def __init__(self, model, host: str, port: int):
-        super().__init__()
+        super().__init__("asr")
         self.host = host
         self.port = port
         self._app = Flask(__name__)
