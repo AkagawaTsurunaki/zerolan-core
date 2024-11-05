@@ -44,28 +44,29 @@ ENV PATH /workspace/miniconda3/envs/paraformer/bin:$PATH
 
 # Clone the repository
 RUN cd /workspace/services/ && \
-    git clone https://github.com/AkagawaTsurunaki/zerolan-core.git && \
-    cd /workspace/services/zerolan-core
+    git clone https://github.com/AkagawaTsurunaki/zerolan-core.git
     
 # [Dev] Check to branch dev
-RUN cd /workspace/services/zerolan-core && git checkout dev
+RUN cd /workspace/services/zerolan-core && \ 
+    git checkout dev
 
 # Install required dependencies
 # NOTE: Users who are not in China please comment these mirror config commands
-RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-RUN pip config set global.index-url https://pypi.mirrors.ustc.edu.cn/simple
-RUN pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
+    pip config set global.index-url https://pypi.mirrors.ustc.edu.cn/simple && \
+    pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
 
 # https://mirrors.aliyun.com/pytorch-wheels https://mirrors.aliyun.com/pytorch-wheels/cu121/
-RUN pip install torch==2.3.1 torchvision torchaudio -f https://mirrors.aliyun.com/pytorch-wheels/cu121/
+RUN pip install torch==2.3.1 torchaudio -f https://mirrors.aliyun.com/pytorch-wheels/cu121/
 # [Dev] Install zerolan-data
 RUN pip install git+https://github.com/AkagawaTsurunaki/zerolan-data.git@dev
 RUN cd /workspace/services/zerolan-core && \
-    pip install -r requirements.txt
-RUN cd /workspace/services/zerolan-core && \
+    pip install -r requirements.txt && \
     pip install -r ./asr/paraformer/requirements.txt
 
+# Install ffmpeg
 RUN apt-get install ffmpeg -y
 
+# Copy config file
 RUN cd /workspace/services/zerolan-core && \
     cp config.template.yaml config.yaml
