@@ -127,22 +127,21 @@ def tts_app() -> AbstractApplication:
     app = TTSApplication(model=tts, host=tts_config["host"], port=tts_config["port"])
     return app
 
-
-def run():
-    service = args.service
+def get_app(service):
+    if "asr" == service:
+        return asr_app()
+    elif "llm" == service:
+        return llm_app()
+    elif "imgcap" == service:
+        return imgcap_app()
+    elif "ocr" == service:
+        return ocr_app()
+    elif "tts" == service:
+        return tts_app()
+        
+def run(service=None):
+    service = args.service if service is None else service
     print(service)
-    def get_app():
-        if "asr" == service:
-            return asr_app()
-        elif "llm" == service:
-            return llm_app()
-        elif "imgcap" == service:
-            return imgcap_app()
-        elif "ocr" == service:
-            return ocr_app()
-        elif "tts" == service:
-            return tts_app()
-
     app = get_app()
     app.run()
 
