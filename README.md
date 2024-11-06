@@ -12,7 +12,7 @@ Build the image and start the container:
 
 ```shell
 docker build ./asr/paraformer --tag zerolan-core-asr-paraformer
-docker run --gpus all -it -p 11001:11001 --name your-zerolan-core-asr-paraformer zerolan-core-asr-paraformer
+docker run -d --gpus all -it -p 11001:11001 --name your-zerolan-core-asr-paraformer zerolan-core-asr-paraformer
 ```
 
 > [!NOTE]
