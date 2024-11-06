@@ -21,10 +21,10 @@ RUN apt-get update && \
 RUN apt-get install git -y && apt-get install git-lfs
 RUN apt-get install wget
 
-# Mirror repo from: https://gitee.com/hf-models/blip-image-captioning-large.git
+# Mirror repo from: https://huggingface.co/Salesforce/blip-image-captioning-large
 RUN cd /workspace/models/ && \
     git lfs install && \
-    git clone https://huggingface.co/Salesforce/blip-image-captioning-large
+    git clone https://gitee.com/hf-models/blip-image-captioning-large.git
     
 # Install conda
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
@@ -53,13 +53,13 @@ RUN cd /workspace/services/zerolan-core && \
 # Install required dependencies
 
 # NOTE: If you need these mirrors for pip, please uncomment them
-# RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
-#     pip config set global.index-url https://pypi.mirrors.ustc.edu.cn/simple && \
-#     pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+RUN pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
+    pip config set global.index-url https://pypi.mirrors.ustc.edu.cn/simple && \
+    pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
 
 # NOTE: If you need these mirror for torch and torchvision, please uncomment it
-# RUN pip install torch==2.3.1 torchvision -f https://mirrors.aliyun.com/pytorch-wheels/cu121/
-RUN pip install torch==2.3.1 torchvision --index-url https://download.pytorch.org/whl/cu121/
+RUN pip install torch==2.3.1 torchvision -f https://mirrors.aliyun.com/pytorch-wheels/cu121/
+# RUN pip install torch==2.3.1 torchvision --index-url https://download.pytorch.org/whl/cu121/
 
 # [Dev] Install zerolan-data
 RUN pip install git+https://github.com/AkagawaTsurunaki/zerolan-data.git@dev
