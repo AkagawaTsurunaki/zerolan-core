@@ -2,7 +2,7 @@
 
 ASR:
   id: "iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1" # The model you want to use
-  host: "127.0.0.1" # Host of the API service you want to start
+  host: "0.0.0.0" # Host of the API service you want to start
   port: 11001 # Port of the API service you want to start  
   config:
     iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1:
@@ -15,7 +15,7 @@ ASR:
 
 LLM:
   id: "THUDM/chatglm3-6b" # The model you want to use
-  host: "127.0.0.1" # Host of the API service you want to start
+  host: "0.0.0.0" # Host of the API service you want to start
   port: 11002 # Port of the API service you want to start
   config:
     THUDM/chatglm3-6b:
@@ -36,7 +36,7 @@ LLM:
 
 ImgCap:
   id: "Salesforce/blip-image-captioning-large" # The model you want to use
-  host: "127.0.0.1" # Host of the API service you want to start
+  host: "0.0.0.0" # Host of the API service you want to start
   port: 11003 # Port of the API service you want to start  
   config:
     Salesforce/blip-image-captioning-large:
@@ -45,7 +45,7 @@ ImgCap:
 
 OCR:
   id: "paddlepaddle/PaddleOCR" # The model you want to use
-  host: "127.0.0.1" # Host of the API service you want to start
+  host: "0.0.0.0" # Host of the API service you want to start
   port: 11004 # Port of the API service you want to start
   config:
     paddlepaddle/PaddleOCR:
@@ -54,7 +54,7 @@ OCR:
 
 TTS:
   id: "AkagawaTsurunaki/GPT-SoVITS" # The model you want to use
-  host: "127.0.0.1" # Host of the API service you want to start
+  host: "0.0.0.0" # Host of the API service you want to start
   port: 11005 # Port of the API service you want to start
   config:
     AkagawaTsurunaki/GPT-SoVITS:
