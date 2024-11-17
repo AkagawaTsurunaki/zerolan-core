@@ -18,6 +18,9 @@ LLM:
   host: "0.0.0.0" # Host of the API service you want to start
   port: 11002 # Port of the API service you want to start
   config:
+    THUDM/glm-4-9b-chat-hf:
+      model_path: "/workspace/models/THUDM/glm-4-9b-chat-hf"
+      device: "cuda"
     THUDM/chatglm3-6b:
       model_path: "/workspace/models/chatglm3-6b" # Directory of the model
       quantize: null  # null | 4 | 8
