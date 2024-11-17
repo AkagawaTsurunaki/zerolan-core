@@ -2,3 +2,5 @@
 **/__pycache__
 config.yaml
 /.idea
+config.yaml.bak
+test.py

@@ -2,14 +2,15 @@ from typing import Any
 
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from zerolan.data.data.llm import LLMQuery, LLMPrediction
+from zerolan.data.data.llm import LLMQuery, LLMPrediction, Conversation, RoleEnum
+from loguru import logger
 
 from common.abs_model import AbstractModel
 from common.decorator import log_model_loading
 from llm.glm4.config import GLM4ModelConfig
 
 
-class ChatGLM3_6B(AbstractModel):
+class GLM4_9B_Chat_Hf(AbstractModel):
 
     def __init__(self, config: GLM4ModelConfig):
         super().__init__()
@@ -32,7 +33,36 @@ class ChatGLM3_6B(AbstractModel):
         ).eval()
 
     def predict(self, llm_query: LLMQuery) -> LLMPrediction:
-        pass
+        messages = self.to_glm4chat_format(llm_query)
+
+        inputs = self._tokenizer.apply_chat_template(messages,
+                                            add_generation_prompt=True,
+                                            tokenize=True,
+                                            return_tensors="pt",
+                                            return_dict=True
+                                            )
+        inputs = inputs.to(self._device)
+        gen_kwargs = {"max_length": 2500, "do_sample": True, "top_k": 1}
+        with torch.no_grad():
+            outputs = self._model.generate(**inputs, **gen_kwargs)
+            print(dir(self._model))
+            outputs = outputs[:, inputs['input_ids'].shape[1]:]
+            output = self._tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+        logger.debug(output)
+
+        return self.to_pipeline_format(output, llm_query.history)
 
     def stream_predict(self, llm_query: LLMQuery):
         raise NotImplementedError()
+
+    @staticmethod
+    def to_glm4chat_format(llm_query: LLMQuery):
+        messages = [{"role": chat.role, "content": chat.content} for chat in llm_query.history]
+        messages.append({"role": "user", "content": llm_query.text})
+        return messages
+    
+    @staticmethod
+    def to_pipeline_format(output: str, history: list[Conversation]):
+        history.append(Conversation(role=RoleEnum.assistant, content=output))
+        return LLMPrediction(response=output, history=history)
