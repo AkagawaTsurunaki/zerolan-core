@@ -64,8 +64,8 @@ def llm_app() -> AbstractApplication:
             from llm.yi.config import YiModelConfig as Config
             return Model(Config(**model_cfg))
         elif llm_id == "THUDM/glm-4-9b-chat-hf":
-            from llm.chatglm3.model import ChatGLM3_6B as Model
-            from llm.chatglm3.config import ChatGLM3ModelConfig as Config
+            from llm.glm4.model import GLM4_9B_Chat_Hf as Model
+            from llm.glm4.config import GLM4ModelConfig as Config
             return Model(Config(**model_cfg))
         else:
             raise NameError(f"No such model name (id) {llm_id}")
