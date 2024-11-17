@@ -1,9 +1,11 @@
-from typing import Any
-
+"""
+More details about the model:
+    https://github.com/THUDM/GLM-4
+"""
 import torch
+from loguru import logger
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from zerolan.data.data.llm import LLMQuery, LLMPrediction, Conversation, RoleEnum
-from loguru import logger
 
 from common.abs_model import AbstractModel
 from common.decorator import log_model_loading
