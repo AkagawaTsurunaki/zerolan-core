@@ -56,6 +56,7 @@ conda create --name speech_paraformer_asr python=3.10
 
 ```
 conda activate speech_paraformer_asr
+pip install -r requirements.txt
 pip install -r ./asr/paraformer/requirements.txt
 ```
 
