@@ -13,11 +13,13 @@ from zerolan.data.data.vid_cap import VidCapQuery
 class VidCapApplication(AbstractApplication):
 
     def __init__(self, model: AbstractModel, host: str, port: int):
-        super().__init__()
+        super().__init__("video-captioning")
         self._app = Flask(__name__)
         self._app.add_url_rule(rule='/vid-cap/predict', view_func=self._handle_predict,
                                methods=["GET", "POST"])
         self._model = model
+        self.host = host
+        self.port = port
 
     def run(self):
         self._model.load_model()

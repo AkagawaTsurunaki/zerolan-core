@@ -12,7 +12,7 @@ from zerolan.data.data.ocr import OCRQuery
 
 class OCRApplication(AbstractApplication):
     def __init__(self, model: AbstractModel, host: str, port: int):
-        super().__init__()
+        super().__init__("ocr")
         self.host = host
         self.port = port
         self._app = Flask(__name__)
