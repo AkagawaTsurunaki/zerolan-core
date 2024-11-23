@@ -1,13 +1,12 @@
 import os.path
-from dataclasses import asdict
 
 from flask import Flask, request, jsonify
 from loguru import logger
+from zerolan.data.pipeline.vid_cap import VidCapQuery, VidCapPrediction
 
+from common.abs_app import AbstractApplication
 from common.abs_model import AbstractModel
 from utils import file_util
-from common.abs_app import AbstractApplication
-from zerolan.data.pipeline.vid_cap import VidCapQuery
 
 
 class VidCapApplication(AbstractApplication):
@@ -57,9 +56,9 @@ class VidCapApplication(AbstractApplication):
     def _handle_predict(self):
         query = self._to_pipeline_format()
         assert os.path.exists(query.vid_path), ""
-        prediction = self._model.predict(query)
+        prediction: VidCapPrediction = self._model.predict(query)
         logger.info(f'Model response: {prediction.caption}')
-        return jsonify(asdict(prediction))
+        return jsonify(prediction.model_dump())
 
     def _handle_stream_predict(self):
         raise NotImplementedError()

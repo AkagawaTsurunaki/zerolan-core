@@ -1,11 +1,9 @@
-from dataclasses import asdict
-
 from flask import Flask, jsonify, request, Response, stream_with_context
 from loguru import logger
+from zerolan.data.pipeline.llm import LLMQuery, LLMPrediction
 
 from common.abs_app import AbstractApplication
 from common.abs_model import AbstractModel
-from zerolan.data.pipeline.llm import LLMQuery, LLMPrediction
 
 
 class LLMApplication(AbstractApplication):

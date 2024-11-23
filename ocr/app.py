@@ -1,13 +1,12 @@
 import os.path
-from dataclasses import asdict
 
 from flask import Flask, request, jsonify
 from loguru import logger
+from zerolan.data.pipeline.ocr import OCRQuery, OCRPrediction
 
+from common.abs_app import AbstractApplication
 from common.abs_model import AbstractModel
 from utils import web_util
-from common.abs_app import AbstractApplication
-from zerolan.data.pipeline.ocr import OCRQuery
 
 
 class OCRApplication(AbstractApplication):
@@ -35,7 +34,7 @@ class OCRApplication(AbstractApplication):
             elif 'multipart/form-data' in request.headers['Content-Type']:
                 # If it's in multipart/form-data format, then try to get the image file.
                 img_path = web_util.save_request_image(request, prefix="ocr")
-                query = OCRQuery(img_path)
+                query = OCRQuery(img_path=img_path)
             else:
                 raise NotImplementedError("Unsupported Content-Type.")
 
@@ -45,9 +44,9 @@ class OCRApplication(AbstractApplication):
     def _handle_predict(self):
         query = self._to_pipeline_format()
         assert os.path.exists(query.img_path), f"The image file does not exist: {query.img_path}"
-        prediction = self._model.predict(query)
-        logger.info(f"Model response: {prediction.unfold_as_str()}")
-        return jsonify(asdict(prediction))
+        prediction: OCRPrediction = self._model.predict(query)
+        logger.info(f"Model response: {prediction}")
+        return jsonify(prediction.model_dump())
 
     def _handle_stream_predict(self):
         raise NotImplementedError()
