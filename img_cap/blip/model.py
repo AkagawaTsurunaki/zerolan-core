@@ -8,7 +8,7 @@ from typing import Any
 import torch
 from PIL import Image
 from transformers import BlipProcessor, BlipForConditionalGeneration
-from zerolan.data.data.img_cap import ImgCapQuery, ImgCapPrediction
+from zerolan.data.pipeline.img_cap import ImgCapQuery, ImgCapPrediction
 
 from common.abs_model import AbstractModel
 from common.decorator import log_model_loading
