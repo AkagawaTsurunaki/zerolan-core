@@ -4,3 +4,4 @@ config.yaml
 /.idea
 config.yaml.bak
 test.py
+/.temp

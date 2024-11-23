@@ -4,11 +4,12 @@ from time import time
 from typing import Literal
 
 project_dir = os.getcwd()
-temp_data_dir = os.path.join(project_dir, "/.temp")
+temp_data_dir = os.path.join(project_dir, ".temp")
 
 
 def create_temp_file(prefix: str, suffix: str, tmpdir: Literal["image", "video", "audio"]) -> str:
     tmp_dir = os.path.join(temp_data_dir, tmpdir)
+    print(tmp_dir)
     if not os.path.exists(tmp_dir):
         os.makedirs(tmp_dir)
     tmp_dir = os.path.abspath(tmp_dir)
