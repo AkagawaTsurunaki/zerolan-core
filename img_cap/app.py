@@ -1,12 +1,10 @@
-from dataclasses import asdict
-
 from flask import Flask, request, jsonify
 from loguru import logger
+from zerolan.data.pipeline.img_cap import ImgCapQuery, ImgCapPrediction
 
+from common.abs_app import AbstractApplication
 from common.abs_model import AbstractModel
 from utils import web_util
-from common.abs_app import AbstractApplication
-from zerolan.data.pipeline.img_cap import ImgCapQuery
 
 
 class ImgCapApplication(AbstractApplication):
@@ -46,9 +44,9 @@ class ImgCapApplication(AbstractApplication):
 
     def _handle_predict(self):
         query = self._to_pipeline_format()
-        prediction = self._model.predict(query)
+        prediction: ImgCapPrediction = self._model.predict(query)
         logger.info(f'Model response: {prediction.caption}')
-        return jsonify(asdict(prediction))
+        return jsonify(prediction.model_dump())
 
     def _handle_stream_predict(self):
         raise NotImplementedError("Not Implemented!")
