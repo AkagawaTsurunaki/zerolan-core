@@ -10,7 +10,7 @@ from modelscope.utils.constant import Tasks
 
 from common.abs_model import AbstractModel
 from common.decorator import log_model_loading
-from zerolan.data.data.vid_cap import VidCapQuery, VidCapPrediction
+from zerolan.data.pipeline.vid_cap import VidCapQuery, VidCapPrediction
 
 
 # Some issues:
