@@ -11,7 +11,7 @@ from loguru import logger
 from asr.paraformer.config import SpeechParaformerModelConfig
 from utils import audio_util
 from common.decorator import log_model_loading
-from zerolan.data.data.asr import ASRModelPrediction, ASRModelQuery, ASRModelStreamQuery
+from zerolan.data.pipeline.asr import ASRPrediction, ASRQuery, ASRStreamQuery
 
 
 class SpeechParaformerModel:
@@ -44,7 +44,7 @@ class SpeechParaformerModel:
         self._model = AutoModel(model=self._model_path, model_revision=self._version)
         assert self._model
 
-    def predict(self, query: ASRModelQuery) -> ASRModelPrediction | None:
+    def predict(self, query: ASRQuery) -> ASRPrediction | None:
 
         """
         Predict words from the audio wave.
@@ -60,7 +60,7 @@ class SpeechParaformerModel:
 
         return self._wrapper(wave_nparray, is_final)
 
-    def stream_predict(self, query: ASRModelStreamQuery) -> ASRModelPrediction | None:
+    def stream_predict(self, query: ASRStreamQuery) -> ASRPrediction | None:
         """
         Stream predict words from the audio wave.
         Args:
@@ -73,7 +73,7 @@ class SpeechParaformerModel:
         assert sample_rate and sample_rate == self._sample_rate, "The sampling rate must be 16000, otherwise the recognition results will be severely skewed."
         return self._wrapper(wave_nparray, query.is_final)
 
-    def _wrapper(self, wave_nparray: np.ndarray, is_final: bool) -> ASRModelPrediction | None:
+    def _wrapper(self, wave_nparray: np.ndarray, is_final: bool) -> ASRPrediction | None:
         assert wave_nparray is not None and isinstance(wave_nparray, np.ndarray), "Wrong format."
         assert len(wave_nparray) > 0, "The audio tensor size must be greater than 0."
         assert len(wave_nparray.shape) == 1, "The audio must be mono."
@@ -85,7 +85,7 @@ class SpeechParaformerModel:
                                        decoder_chunk_look_back=self._decoder_chunk_look_back)
             transcript = res[0]["text"]
 
-            return ASRModelPrediction(transcript)
+            return ASRPrediction(transcript=transcript)
         except IndexError as e:
             if "IndexError: list index out of range" in str(e):
                 logger.warning("Prediction error unexcpectedly.")

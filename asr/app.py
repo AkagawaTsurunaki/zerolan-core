@@ -3,7 +3,7 @@ from loguru import logger
 
 from common.abs_app import AbstractApplication
 from utils import audio_util, file_util, web_util
-from zerolan.data.data.asr import ASRModelQuery, ASRModelStreamQuery
+from zerolan.data.pipeline.asr import ASRQuery, ASRStreamQuery
 
 
 class ASRApplication(AbstractApplication):
@@ -25,7 +25,7 @@ class ASRApplication(AbstractApplication):
     def _handle_predict(self):
         logger.info('Request received: processing...')
 
-        query: ASRModelQuery = web_util.get_obj_from_json(request, ASRModelQuery)
+        query: ASRQuery = web_util.get_obj_from_json(request, ASRQuery)
         audio_path = web_util.save_request_audio(request, prefix="asr")
 
         # Convert to mono channel audio file.
@@ -38,7 +38,7 @@ class ASRApplication(AbstractApplication):
         return jsonify(prediction.to_dict())  # type: ignore[attr-defined]
 
     def _handle_stream_predict(self):
-        query: ASRModelStreamQuery = web_util.get_obj_from_json(request, ASRModelStreamQuery)
+        query: ASRStreamQuery = web_util.get_obj_from_json(request, ASRStreamQuery)
         audio_data = web_util.get_request_audio_file(request).stream.read()
         query.audio_data = audio_data
 
