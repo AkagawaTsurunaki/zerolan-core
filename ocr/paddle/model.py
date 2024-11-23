@@ -28,7 +28,7 @@ class PaddleOCRModel(AbstractModel):
 
     def predict(self, query: OCRQuery) -> OCRPrediction:
         result = self.model.ocr(query.img_path, cls=True)
-        prediction = OCRPrediction(list())
+        prediction = OCRPrediction(region_results=list())
         for idx in range(len(result)):
             res = result[idx]
             for line in res:
@@ -37,9 +37,9 @@ class PaddleOCRModel(AbstractModel):
                 ru = Vector2D(x=ru[0], y=ru[1])
                 rd = Vector2D(x=rd[0], y=rd[1])
                 ld = Vector2D(x=ld[0], y=ld[1])
-                position = Position(lu, ru, rd, ld)
+                position = Position(lu=lu, ru=ru, rd=rd, ld=ld)
                 content, confidence = line[1][0], line[1][1]
-                prediction.region_results.append(RegionResult(position, content, confidence))
+                prediction.region_results.append(RegionResult(position=position, content=content, confidence=confidence))
 
         return prediction
 
