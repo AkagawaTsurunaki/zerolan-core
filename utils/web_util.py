@@ -1,14 +1,15 @@
 from flask import Request
+from pydantic import BaseModel
+
 from utils.file_util import create_temp_file
 from loguru import logger
 
-def get_obj_from_json(request: Request, type: any) -> any:
+def get_obj_from_json(request: Request, type: BaseModel) -> any:
     # If it's in multipart/form-data format, then try to get the deserialized JSON object
     json_str = request.form.get("json", None)
     if json_str is None:
         raise ValueError('There is no JSON data in the json field in the request')
-    assert hasattr(type, "from_json"), f"Unable to convert JSON data to {type}"
-    obj = type.from_json(json_str)
+    obj = type.model_validate_json(json_str)
     return obj
 
 
