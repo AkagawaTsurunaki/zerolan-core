@@ -3,7 +3,7 @@ from typing import Any
 from common.abs_model import AbstractModel
 from common.decorator import log_model_loading
 from llm.yi.config import YiModelConfig
-from zerolan.data.data.llm import LLMQuery, Conversation, LLMPrediction
+from zerolan.data.pipeline.llm import LLMQuery, Conversation, LLMPrediction
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
@@ -29,9 +29,9 @@ class Yi6B_Chat(AbstractModel):
         """
         Predict tokens based on history and query from LLM.
         Args:
-            llm_query: See zerolan.data.data.llm.LLMQuery
+            llm_query: See zerolan.data.pipeline.llm.LLMQuery
 
-        Returns: See zerolan.data.data.llm.LLMPrediction
+        Returns: See zerolan.data.pipeline.llm.LLMPrediction
 
         """
         messages = self._to_yi_format(llm_query)
@@ -51,9 +51,9 @@ class Yi6B_Chat(AbstractModel):
         """
         Stream predict tokens based on history and query from LLM.
         Args:
-            llm_query: See zerolan.data.data.llm.LLMQuery
+            llm_query: See zerolan.data.pipeline.llm.LLMQuery
 
-        Returns: See zerolan.data.data.llm.LLMPrediction
+        Returns: See zerolan.data.pipeline.llm.LLMPrediction
 
         """
         raise NotImplementedError('Stream prediction has not implemented!')

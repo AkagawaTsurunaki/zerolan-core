@@ -55,13 +55,3 @@ def save_request_audio(request: Request, prefix: str) -> str:
     logger.debug(f"Temporary files are created at: {temp_file_path}")
 
     return temp_file_path
-
-
-def get_obj_from_json(request: Request, type: any) -> any:
-    # If it's in multipart/form-data format, try to get the deserialized JSON object
-    json_str = request.form.get("json", None)
-    if json_str is None:
-        raise ValueError('There is no JSON data in the json field in the request')
-    assert hasattr(type, "from_json"), f"JSON data cannot be converted to {type}"
-    obj = type.from_json(json_str)
-    return obj

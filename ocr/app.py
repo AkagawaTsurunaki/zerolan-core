@@ -7,7 +7,7 @@ from loguru import logger
 from common.abs_model import AbstractModel
 from utils import web_util
 from common.abs_app import AbstractApplication
-from zerolan.data.data.ocr import OCRQuery
+from zerolan.data.pipeline.ocr import OCRQuery
 
 
 class OCRApplication(AbstractApplication):

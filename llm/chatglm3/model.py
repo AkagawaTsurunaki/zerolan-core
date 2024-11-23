@@ -8,7 +8,7 @@ from transformers import AutoTokenizer, AutoModel
 from common.abs_model import AbstractModel
 from common.decorator import log_model_loading
 from llm.chatglm3.config import ChatGLM3ModelConfig
-from zerolan.data.data.llm import LLMQuery, LLMPrediction, Conversation
+from zerolan.data.pipeline.llm import LLMQuery, LLMPrediction, Conversation
 
 
 class ChatGLM3_6B(AbstractModel):
@@ -41,9 +41,9 @@ class ChatGLM3_6B(AbstractModel):
         """
         Predict tokens based on history and query from LLM.
         Args:
-            llm_query: See zerolan.data.data.llm.LLMQuery
+            llm_query: See zerolan.data.pipeline.llm.LLMQuery
 
-        Returns: See zerolan.data.data.llm.LLMPrediction
+        Returns: See zerolan.data.pipeline.llm.LLMPrediction
 
         """
         text, history = self._to_chatglm_format(llm_query)
@@ -58,9 +58,9 @@ class ChatGLM3_6B(AbstractModel):
         """
         Stream predict tokens based on history and query from LLM.
         Args:
-            llm_query: See zerolan.data.data.llm.LLMQuery
+            llm_query: See zerolan.data.pipeline.llm.LLMQuery
 
-        Returns: See zerolan.data.data.llm.LLMPrediction
+        Returns: See zerolan.data.pipeline.llm.LLMPrediction
 
         """
         text, history = self._to_chatglm_format(llm_query)

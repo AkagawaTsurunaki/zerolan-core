@@ -7,7 +7,7 @@ from loguru import logger
 from common.abs_model import AbstractModel
 from utils import file_util
 from common.abs_app import AbstractApplication
-from zerolan.data.data.vid_cap import VidCapQuery
+from zerolan.data.pipeline.vid_cap import VidCapQuery
 
 
 class VidCapApplication(AbstractApplication):

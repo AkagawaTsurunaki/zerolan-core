@@ -1,8 +1,9 @@
 """
 Not implemented
 """
-from zerolan_live_robot_core.abs_app import AbstractApplication
 from loguru import logger
+
+from common.abs_app import AbstractApplication
 
 
 class TTSApplication(AbstractApplication):
