@@ -12,7 +12,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, TextStreamer, Text
 from common.abs_model import AbstractModel
 from common.decorator import log_model_loading
 from llm.shisa.config import ShisaModelConfig
-from zerolan.data.data.llm import LLMQuery, LLMPrediction, Conversation
+from zerolan.data.pipeline.llm import LLMQuery, LLMPrediction, Conversation
 
 
 class Shisa7B_V1(AbstractModel):
@@ -47,9 +47,9 @@ class Shisa7B_V1(AbstractModel):
         """
         Predict tokens based on history and query from LLM.
         Args:
-            llm_query: See zerolan.data.data.llm.LLMQuery
+            llm_query: See zerolan.data.pipeline.llm.LLMQuery
 
-        Returns: See zerolan.data.data.llm.LLMPrediction
+        Returns: See zerolan.data.pipeline.llm.LLMPrediction
 
         """
         history = self._to_shisa_format(llm_query)
@@ -79,9 +79,9 @@ class Shisa7B_V1(AbstractModel):
         """
         Stream predict tokens based on history and query from LLM.
         Args:
-            llm_query: See zerolan.data.data.llm.LLMQuery
+            llm_query: See zerolan.data.pipeline.llm.LLMQuery
 
-        Returns: See zerolan.data.data.llm.LLMPrediction
+        Returns: See zerolan.data.pipeline.llm.LLMPrediction
 
         """
         raise NotImplementedError('Stream prediction has not implemented!')

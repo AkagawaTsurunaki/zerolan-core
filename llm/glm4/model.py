@@ -5,7 +5,7 @@ More details about the model:
 import torch
 from loguru import logger
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from zerolan.data.data.llm import LLMQuery, LLMPrediction, Conversation, RoleEnum
+from zerolan.data.pipeline.llm import LLMQuery, LLMPrediction, Conversation, RoleEnum
 
 from common.abs_model import AbstractModel
 from common.decorator import log_model_loading
