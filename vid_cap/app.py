@@ -32,7 +32,7 @@ class VidCapApplication(AbstractApplication):
             if request.headers['Content-Type'] == 'application/json':
                 # If it's in JSON format, then there must be a video location
                 json_val = request.get_json()
-                query = VidCapQuery.from_dict(json_val)
+                query = VidCapQuery.model_validate(json_val)
             elif 'multipart/form-data' in request.headers['Content-Type']:
                 # If it's in multipart/form-data format, then try to get the video file
                 video_file = request.files.get('video', None)

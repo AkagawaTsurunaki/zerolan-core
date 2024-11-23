@@ -3,7 +3,7 @@ from loguru import logger
 
 from common.abs_app import AbstractApplication
 from utils import audio_util, file_util, web_util
-from zerolan.data.pipeline.asr import ASRQuery, ASRStreamQuery
+from zerolan.data.pipeline.asr import ASRQuery, ASRStreamQuery, ASRPrediction
 
 
 class ASRApplication(AbstractApplication):
@@ -33,14 +33,14 @@ class ASRApplication(AbstractApplication):
         audio_util.convert_to_mono(audio_path, mono_audio_path, query.sample_rate)
         query.audio_path = mono_audio_path
 
-        prediction = self._model.predict(query)
+        prediction: ASRPrediction = self._model.predict(query)
 
-        return jsonify(prediction.to_dict())  # type: ignore[attr-defined]
+        return jsonify(prediction.model_dump())
 
     def _handle_stream_predict(self):
         query: ASRStreamQuery = web_util.get_obj_from_json(request, ASRStreamQuery)
         audio_data = web_util.get_request_audio_file(request).stream.read()
         query.audio_data = audio_data
 
-        prediction = self._model.stream_predict(query)
-        return jsonify(prediction.to_dict())  # type: ignore[attr-defined]
+        prediction: ASRPrediction = self._model.stream_predict(query)
+        return jsonify(prediction.model_dump())

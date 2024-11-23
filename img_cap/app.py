@@ -34,7 +34,7 @@ class ImgCapApplication(AbstractApplication):
             if request.headers['Content-Type'] == 'application/json':
                 # If it's in JSON format, then there must be an image location.
                 json_val = request.get_json()
-                query = ImgCapQuery.from_dict(json_val)
+                query = ImgCapQuery.model_validate(json_val)
             elif 'multipart/form-data' in request.headers['Content-Type']:
                 query: ImgCapQuery = web_util.get_obj_from_json(request, ImgCapQuery)
                 query.img_path = web_util.save_request_image(request, prefix="imgcap")

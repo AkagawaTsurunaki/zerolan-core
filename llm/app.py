@@ -5,7 +5,7 @@ from loguru import logger
 
 from common.abs_app import AbstractApplication
 from common.abs_model import AbstractModel
-from zerolan.data.pipeline.llm import LLMQuery
+from zerolan.data.pipeline.llm import LLMQuery, LLMPrediction
 
 
 class LLMApplication(AbstractApplication):
@@ -29,15 +29,15 @@ class LLMApplication(AbstractApplication):
         with self._app.app_context():
             logger.info('Query received: processing...')
             json_val = request.get_json()
-            llm_query = LLMQuery.from_dict(json_val)
+            llm_query = LLMQuery.model_validate(json_val)
             logger.info(f'User Input {llm_query.text}')
             return llm_query
 
     def _handle_predict(self):
         llm_query = self._to_pipeline_format()
-        p = self._llm.predict(llm_query)
+        p: LLMPrediction = self._llm.predict(llm_query)
         logger.info(f'Model response: {p.response}')
-        return jsonify(asdict(p))
+        return jsonify(p.model_dump())
 
     def _handle_stream_predict(self):
         llm_query = self._to_pipeline_format()
@@ -45,7 +45,8 @@ class LLMApplication(AbstractApplication):
         def generate_output(q: LLMQuery):
             with self._app.app_context():
                 for p in self._llm.stream_predict(q):
+                    p: LLMPrediction
                     logger.info(f'Model response (stream): {p.response}')
-                    yield jsonify(p.to_dict()).data + b'\n'
+                    yield jsonify(p.model_dump()).data + b'\n'
 
         return Response(stream_with_context(generate_output(llm_query)), content_type='application/json')

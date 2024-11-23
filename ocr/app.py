@@ -31,7 +31,7 @@ class OCRApplication(AbstractApplication):
             if request.headers['Content-Type'] == 'application/json':
                 # If it's in JSON format, then there must be an image location.
                 json_val = request.get_json()
-                query = OCRQuery.from_dict(json_val)
+                query = OCRQuery.model_validate(json_val)
             elif 'multipart/form-data' in request.headers['Content-Type']:
                 # If it's in multipart/form-data format, then try to get the image file.
                 img_path = web_util.save_request_image(request, prefix="ocr")
