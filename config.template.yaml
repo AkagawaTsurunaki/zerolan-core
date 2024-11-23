@@ -21,6 +21,7 @@ LLM:
     THUDM/glm-4-9b-chat-hf:
       model_path: "THUDM/glm-4-9b-chat-hf"
       device: "cuda"
+      max_length: 5000
     THUDM/chatglm3-6b:
       model_path: "THUDM/chatglm3-6b" # Directory of the model
       quantize: null  # null | 4 | 8

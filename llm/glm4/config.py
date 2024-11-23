@@ -5,3 +5,4 @@ from dataclasses import dataclass
 class GLM4ModelConfig:
     model_path: str = "THUDM/glm-4-9b-chat-hf"
     device: str = "cuda"
+    max_length: int = 5000

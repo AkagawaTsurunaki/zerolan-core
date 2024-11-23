@@ -19,6 +19,7 @@ class GLM4_9B_Chat_Hf(AbstractModel):
         self.model_id = "THUDM/glm-4-9b-chat-hf"
         self._model_path = config.model_path
         self._device = config.device
+        self._max_length = config.max_length
 
         self._tokenizer: any = None
         self._model: any = None
@@ -44,7 +45,7 @@ class GLM4_9B_Chat_Hf(AbstractModel):
                                             return_dict=True
                                             )
         inputs = inputs.to(self._device)
-        gen_kwargs = {"max_length": 2500, "do_sample": True, "top_k": 1}
+        gen_kwargs = {"max_length": self._max_length, "do_sample": True, "top_k": 1}
         with torch.no_grad():
             outputs = self._model.generate(**inputs, **gen_kwargs)
             print(dir(self._model))
