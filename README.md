@@ -1,8 +1,10 @@
-# Zerolan Core
+# ZerolanCore
 
-![Static Badge](https://img.shields.io/badge/python-3.10-blue) ![Static Badge](https://img.shields.io/badge/docker-supported-blue) ![Static Badge](https://img.shields.io/badge/LLM-purple) ![Static Badge](https://img.shields.io/badge/ASR-purple) ![Static Badge](https://img.shields.io/badge/TTS-purple) ![Static Badge](https://img.shields.io/badge/Image%20Captionning-purple) ![Static Badge](https://img.shields.io/badge/Video%20Captionning-purple) ![Static Badge](https://img.shields.io/badge/OCR-purple) 
+![Static Badge](https://img.shields.io/badge/Python-3.10-blue) ![Static Badge](https://img.shields.io/badge/Docker-Supported-blue) ![Static Badge](https://img.shields.io/badge/LLM-purple) ![Static Badge](https://img.shields.io/badge/ASR-purple) ![Static Badge](https://img.shields.io/badge/TTS-purple) ![Static Badge](https://img.shields.io/badge/OCR-purple) ![Static Badge](https://img.shields.io/badge/Image%20Captioning-purple) ![Static Badge](https://img.shields.io/badge/Video%20Captioning-purple) ![Static Badge](https://img.shields.io/badge/License-MIT-orange) ![Static Badge](https://img.shields.io/badge/ver-1.0-green) 
 
-Zerolan Core 集成了众多开源的、可本地部署的人工智能模型或服务，旨在使用统一的管线设计封装大语言模型（LLM）、自动语音识别（ASR）、文本转语音（TTS）、图像字幕（Image Captioning）、光学字符识别（OCR）、视频字幕（Video Captioning）等一系列的人工智能模型，并可以使用统一的配置文件和服务启动器快速部署和启动 AI 服务。
+ZerolanCore 集成了众多开源的、可本地部署的人工智能模型或服务，旨在使用统一的管线设计封装大语言模型（LLM）、自动语音识别（ASR）、文本转语音（TTS）、图像字幕（Image Captioning）、光学字符识别（OCR）、视频字幕（Video Captioning）等一系列的人工智能模型，并可以使用统一的配置文件和服务启动器快速部署和启动 AI 服务。
+
+>  相关项目：[ZerolanLiveRobot](https://github.com/AkagawaTsurunaki/ZerolanLiveRobot)、[ZerolanData](https://github.com/AkagawaTsurunaki/zerolan-data)
 
 ## 部署准备工作
 
@@ -40,9 +42,7 @@ docker run -d --gpus all -it -p 11001:11001 --name my_conatainer speech_paraform
 > 
 > Docker 文件中指定了一些镜像，这是为了更快的下载和构建。如果你不需要它们，请根据实际需求删除这些指令。
 
-> [!TIP]
-> 
-> 如果不希望构建 Docker Container，可以在 Anaconda 中建立多个虚拟环境，或者直接使用 `pyenv` 建立虚拟环境，并使用 `pip` 进行安装。
+如果不希望构建 Docker Container，可以在 Anaconda 中建立多个虚拟环境，或者直接使用 `pyenv` 建立虚拟环境，并使用 `pip` 进行安装。
 
 以 Anaconda 为例，运行以下命令：
 
@@ -78,7 +78,7 @@ pip install -r ./asr/paraformer/requirements.txt
 
 > [!IMPORTANT]
 > 
-> 默认配置下，Zerolan Core 会尝试从 Hugging Face 下载部分模型，由于部分地区连接 Hugging Face 存在困难，您可能需要手动下载模型并设置模型地址。
+> 默认配置下，ZerolanCore 会尝试从 Hugging Face 下载部分模型，由于部分地区连接 Hugging Face 存在困难，您可能需要手动下载模型并设置模型地址。
 
 ### 启动模型服务
 
@@ -96,11 +96,11 @@ python starter.py asr
 
 ## 支持集成模型
 
-以下的模型已经集成在 Zerolan Core 中，并均过作者在 Windows 11 和 Ubuntu 22.04 两个主流系统上进行了测试，可以正常使用。然而不同系统的环境差异显著，实在无法广泛覆盖所有情况，如有意外敬请谅解。
+以下的模型已经集成在 ZerolanCore 中，并均过作者在 Windows 11 和 Ubuntu 22.04 两个主流系统上进行了测试，可以正常使用。然而不同系统的环境差异显著，实在无法广泛覆盖所有情况，如有意外敬请谅解。
 
 > [!CAUTION]
 >
-> 如果运行的模型所需要显存大小，远远超过你的系统的显存与内存之和，这可能造成**系统崩溃**，进而引发生产事故。
+> 如果运行的模型所需要显存大小，远远超过你的系统的显存与内存之和，这可能造成**系统崩溃**。
 >
 > 因此在模型加载的过程中，请时刻留意你的系统资源状况。在 Windows 中，使用 `CTRL` + `SHIFT` + `ECS` 调出任务管理器进行监视；Ubuntu 上可以使用`nvtop` 监视显存占用，使用 `top` 监视内存占用。
 
