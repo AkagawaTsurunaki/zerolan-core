@@ -31,6 +31,8 @@ class PaddleOCRModel(AbstractModel):
         prediction = OCRPrediction(region_results=list())
         for idx in range(len(result)):
             res = result[idx]
+            if res is None:
+                continue
             for line in res:
                 lu, ru, rd, ld = line[0][0], line[0][1], line[0][2], line[0][3]
                 lu = Vector2D(x=lu[0], y=lu[1])
