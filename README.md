@@ -144,7 +144,7 @@ python starter.py asr
 
 > [!IMPORTANT]
 > 
-> 1. [GPT-SoVITS](https://github.com/AkagawaTsurunaki/GPT-SoVITS) 的安装教程请参考官方 `README.md`，请注意必须是[此 Forked 版本](https://github.com/AkagawaTsurunaki/GPT-SoVITS)才能与本项目的接口适配。
+> 1. [GPT-SoVITS](https://github.com/AkagawaTsurunaki/GPT-SoVITS) 的安装教程请参考官方 `README.md`，请注意必须是[此 Forked 版本](https://github.com/AkagawaTsurunaki/GPT-SoVITS)才能与本项目的接口适配。你需要切换到 `dev` 分支，然后按照运行 `api.py` 的方式运行 `zerolan.py` 即可，因为实际上 `zerolan.py` 只是修改了接口中端点内容。
 
 ### 图像字幕模型
 
