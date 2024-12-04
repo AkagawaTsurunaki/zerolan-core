@@ -3,6 +3,7 @@ More details about the model:
     https://github.com/showlab/ShowUI
     https://huggingface.co/showlab/ShowUI-2B
 """
+from typing import List
 
 # DeepSpeed lib is only supported on Linux platform!
 
@@ -17,9 +18,7 @@ import os
 
 from vla.showui.config import ShowUIModelConfig
 
-
 _SYSTEM = "Based on the screenshot of the page, I give a text description and you give its corresponding location. The coordinate represents a clickable location [x, y] for an element, which is a relative coordinate on the screenshot, scaled from 0 to 1."
-
 
 _NAV_SYSTEM = """You are an assistant trained to navigate the {_APP} screen. 
 Given a task instruction, a screen observation, and an action history sequence, 
@@ -60,8 +59,18 @@ action_map = {
 }
 
 
+def stringify(actions: List[WebAction | PhoneAction]):
+    assert isinstance(actions, list)
+    result = ""
+    for action in actions:
+        action_dict = {'action': action.action, 'value': action.value, 'position': action.position}
+        result += f"{action_dict}"
+    return result
+
+
 class ShowUIModel(AbstractModel):
     def __init__(self, config: ShowUIModelConfig):
+        super().__init__()
         self._model = None
         self._processor = None
 
@@ -87,13 +96,14 @@ class ShowUIModel(AbstractModel):
 
     def _predict_nav(self, query: ShowUiQuery) -> ShowUiPrediction:
         img_url = query.img_path
-        split = query.action.env
+        split = query.env
         if query.system_prompt is None:
             system_prompt = _NAV_SYSTEM.format(
                 _APP=split, _ACTION_SPACE=action_map[split])
         else:
             system_prompt = query.system_prompt
         query_content = query.query
+        past_action = stringify(query.history)
 
         messages = [
             {
@@ -101,9 +111,9 @@ class ShowUIModel(AbstractModel):
                 "content": [
                     {"type": "text", "text": system_prompt},
                     {"type": "text", "text": f'Task: {query_content}'},
-                    # {"type": "text", "text": PAST_ACTION},
+                    {"type": "text", "text": past_action},
                     {"type": "image", "image": img_url,
-                        "min_pixels": self._min_pixels, "max_pixels": self._max_pixels},
+                     "min_pixels": self._min_pixels, "max_pixels": self._max_pixels},
                 ],
             }
         ]
@@ -152,7 +162,7 @@ class ShowUIModel(AbstractModel):
                 "content": [
                     {"type": "text", "text": system_prompt},
                     {"type": "image", "image": img_url,
-                        "min_pixels": self._min_pixels, "max_pixels": self._max_pixels},
+                     "min_pixels": self._min_pixels, "max_pixels": self._max_pixels},
                     {"type": "text", "text": query_content}
                 ],
             }
@@ -194,7 +204,7 @@ class ShowUIModel(AbstractModel):
         return output_text
 
     def predict(self, query: ShowUiQuery):
-        if query.action is None:
+        if query.env is None:
             return self._predict_ground(query)
         else:
             return self._predict_nav(query)
