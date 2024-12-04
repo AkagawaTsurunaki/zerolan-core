@@ -43,7 +43,7 @@ class ShowUIApplication(AbstractApplication):
     def _handle_predict(self):
         query = self._to_pipeline_format()
         prediction: ShowUiPrediction = self._model.predict(query)
-        logger.info(f'Model response: {prediction.click_xy}')
+        logger.info(f'Model response: {prediction.model_dump_json()}')
         return jsonify(prediction.model_dump())
 
     def _handle_stream_predict(self):

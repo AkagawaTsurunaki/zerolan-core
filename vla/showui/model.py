@@ -18,7 +18,6 @@ import os
 from vla.showui.config import ShowUIModelConfig
 
 
-
 _SYSTEM = "Based on the screenshot of the page, I give a text description and you give its corresponding location. The coordinate represents a clickable location [x, y] for an element, which is a relative coordinate on the screenshot, scaled from 0 to 1."
 
 
@@ -137,7 +136,7 @@ class ShowUIModel(AbstractModel):
             else:
                 raise ValueError("No such platform!")
 
-        return actions
+        return ShowUiPrediction(actions=actions)
 
     def _predict_ground(self, query: ShowUiQuery) -> ShowUiPrediction:
         img_url = query.img_path
@@ -168,7 +167,8 @@ class ShowUIModel(AbstractModel):
         for elm in click_xy:
             assert isinstance(elm, float)
 
-        return ShowUiPrediction(click_xy=click_xy)
+        action = WebAction(action="CLICK", value=None, position=click_xy)
+        return ShowUiPrediction(actions=[action])
 
     def _predict(self, messages) -> str:
         text = self._processor.apply_chat_template(
