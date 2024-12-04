@@ -103,20 +103,33 @@ class ShowUIModel(AbstractModel):
         else:
             system_prompt = query.system_prompt
         query_content = query.query
-        past_action = stringify(query.history)
 
-        messages = [
-            {
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": system_prompt},
-                    {"type": "text", "text": f'Task: {query_content}'},
-                    {"type": "text", "text": f'Past actions: {past_action}'},
-                    {"type": "image", "image": img_url,
-                     "min_pixels": self._min_pixels, "max_pixels": self._max_pixels},
-                ],
-            }
-        ]
+        if len(query.history) == 0:
+            messages = [
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": system_prompt},
+                        {"type": "text", "text": f'Task: {query_content}'},
+                        {"type": "image", "image": img_url,
+                         "min_pixels": self._min_pixels, "max_pixels": self._max_pixels},
+                    ],
+                }
+            ]
+        else:
+            past_action = stringify(query.history)
+            messages = [
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": system_prompt},
+                        {"type": "text", "text": f'Task: {query_content}'},
+                        {"type": "text", "text": f'Past actions: {past_action}'},
+                        {"type": "image", "image": img_url,
+                         "min_pixels": self._min_pixels, "max_pixels": self._max_pixels},
+                    ],
+                }
+            ]
 
         output_text = self._predict(messages)
         # {'action': 'CLICK', 'value': None, 'position': [0.49, 0.42]},
