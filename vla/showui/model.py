@@ -111,7 +111,7 @@ class ShowUIModel(AbstractModel):
                 "content": [
                     {"type": "text", "text": system_prompt},
                     {"type": "text", "text": f'Task: {query_content}'},
-                    {"type": "text", "text": past_action},
+                    {"type": "text", "text": f'Past actions: {past_action}'},
                     {"type": "image", "image": img_url,
                      "min_pixels": self._min_pixels, "max_pixels": self._max_pixels},
                 ],
