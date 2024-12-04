@@ -6,6 +6,7 @@ from common.abs_app import AbstractApplication
 
 parser = argparse.ArgumentParser()
 parser.add_argument('service', type=str)
+parser.add_argument('--model', type=str)
 parser.add_argument('--config', type=str)
 args = parser.parse_args()
 
@@ -35,7 +36,8 @@ def asr_app() -> AbstractApplication:
             raise NameError(f"No such model name (id) {asr_id}")
 
     asr = get_model()
-    app = ASRApplication(model=asr, host=asr_config["host"], port=asr_config["port"])
+    app = ASRApplication(
+        model=asr, host=asr_config["host"], port=asr_config["port"])
     return app
 
 
@@ -71,7 +73,8 @@ def llm_app() -> AbstractApplication:
             raise NameError(f"No such model name (id) {llm_id}")
 
     llm = get_model()
-    app = LLMApplication(model=llm, host=llm_config["host"], port=llm_config["port"])
+    app = LLMApplication(
+        model=llm, host=llm_config["host"], port=llm_config["port"])
     return app
 
 
@@ -91,7 +94,8 @@ def imgcap_app() -> AbstractApplication:
             raise NameError(f"No such model name (id) {imgcap_id}")
 
     imgcap = get_model()
-    app = ImgCapApplication(model=imgcap, host=imgcap_config["host"], port=imgcap_config["port"])
+    app = ImgCapApplication(
+        model=imgcap, host=imgcap_config["host"], port=imgcap_config["port"])
     return app
 
 
@@ -111,7 +115,8 @@ def ocr_app() -> AbstractApplication:
             raise NameError(f"No such model name (id) {ocr_id}")
 
     ocr = get_model()
-    app = OCRApplication(model=ocr, host=ocr_config["host"], port=ocr_config["port"])
+    app = OCRApplication(
+        model=ocr, host=ocr_config["host"], port=ocr_config["port"])
     return app
 
 
@@ -128,8 +133,23 @@ def tts_app() -> AbstractApplication:
             return Model()
 
     tts = get_model()
-    app = TTSApplication(model=tts, host=tts_config["host"], port=tts_config["port"])
+    app = TTSApplication(
+        model=tts, host=tts_config["host"], port=tts_config["port"])
     return app
+
+
+def vla_app(model) -> AbstractApplication:
+    if "showui" in model:
+        config = _config["VLA"]["ShowUI"]
+        model_cfg = config["config"]
+        from vla.showui.app import ShowUIApplication as App
+        from vla.showui.config import ShowUIModelConfig as Config
+        from vla.showui.model import ShowUIModel as Model
+
+        model = Model(Config(**model_cfg))
+        app = App(model=model, host=config["host"], port=config["port"])
+        return app
+
 
 def get_app(service):
     if "asr" == service:
@@ -142,7 +162,10 @@ def get_app(service):
         return ocr_app()
     elif "tts" == service:
         return tts_app()
-        
+    elif "vla" == service:
+        return vla_app(args.model)
+
+
 def run(service=None):
     service = args.service if service is None else service
     print(service)
