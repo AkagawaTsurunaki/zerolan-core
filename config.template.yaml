@@ -63,3 +63,15 @@ TTS:
   config:
     AkagawaTsurunaki/GPT-SoVITS:
       # Under developing for quick installing
+
+VLA:
+  ShowUI:
+    id: "showlab/ShowUI-2B"
+    host: "0.0.0.0"
+    port: 11009
+    config: 
+      min_pixels: 200704 # 256*28*28
+      max_pixels: 1053696 # 1344*28*28
+      showui_model_path: "showlab/ShowUI-2B" # Directory of the model
+      showui_model_device: auto # Device to run the model
+      qwen_vl_2b_instruct_model_path: "Qwen/Qwen2-VL-2B-Instruct" # Directory of the model

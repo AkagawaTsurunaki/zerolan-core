@@ -5,3 +5,4 @@ config.yaml
 config.yaml.bak
 test.py
 /.temp
+*.png
