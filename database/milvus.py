@@ -94,7 +94,7 @@ class MilvusApplication:
             return obj
 
     def _to_json(self, res: any):
-        if isinstance(res, BaseModel) or issubclass(res, BaseModel):
+        if isinstance(res, BaseModel):
             res = res.model_dump()
 
         return jsonify(res)
