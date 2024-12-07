@@ -6,3 +6,4 @@ config.yaml.bak
 test.py
 /.temp
 *.png
+/.data

@@ -3,6 +3,7 @@ from typing import List, Type
 from pymilvus import MilvusClient
 from pymilvus import model
 from pydantic import BaseModel
+from loguru import logger
 
 
 class InsertRow(BaseModel):
@@ -16,6 +17,11 @@ class MulvusInsert(BaseModel):
     texts: List[InsertRow]
 
 
+class MulvusInsertResult(BaseModel):
+    insert_count: int
+    ids: List[int]
+
+
 class MulvusQuery(BaseModel):
     collection_name: str
     limit: int
@@ -24,8 +30,8 @@ class MulvusQuery(BaseModel):
 
 
 class MilvusDatabase:
-    def __init__(self):
-        self._milvus_path: str = "./data/default.db"
+    def __init__(self, database_path: str):
+        self._milvus_path: str = database_path
         self._dimension = 768
         self._client: MilvusClient = MilvusClient(self._milvus_path)
         self._embedding_fn = model.DefaultEmbeddingFunction()
@@ -41,10 +47,10 @@ class MilvusDatabase:
                 dimension=dimension,
             )
 
-    def insert(self, insert: MulvusInsert):
+    def insert(self, insert: MulvusInsert) -> MulvusInsertResult:
         assert isinstance(insert, MulvusInsert)
         self.try_create_collection(insert.collection_name, self._dimension)
-        docs = insert.texts
+        docs = [row.text for row in insert.texts]
         vectors = self._embedding_fn.encode_documents(docs)
         data = [
             {"id": i, "vector": vectors[i],
@@ -53,7 +59,9 @@ class MilvusDatabase:
         ]
         res = self._client.insert(
             collection_name=insert.collection_name, data=data)
-        print(res)
+        logger.info(res)
+        return MulvusInsertResult(insert_count=res.get(
+            "insert_count", -1), ids=res.get("ids", []))
 
     def search(self, query: MulvusQuery):
         assert isinstance(query, MulvusQuery)
@@ -74,6 +82,8 @@ class MilvusApplication:
         self._app = Flask(__name__)
         self._app.add_url_rule(rule="/milvus/insert",
                                view_func=self._handle_insert, methods=["POST"])
+        self._app.add_url_rule(rule="/milvus/search",
+                               view_func=self._handle_search, methods=["POST"])
 
         self._database = database
 
