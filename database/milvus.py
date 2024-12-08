@@ -12,21 +12,32 @@ class InsertRow(BaseModel):
     subject: str
 
 
-class MulvusInsert(BaseModel):
+class MilvusInsert(BaseModel):
     collection_name: str
+    drop_if_exists: bool = False
     texts: List[InsertRow]
 
 
-class MulvusInsertResult(BaseModel):
+class MilvusInsertResult(BaseModel):
     insert_count: int
     ids: List[int]
 
 
-class MulvusQuery(BaseModel):
+class MilvusQuery(BaseModel):
     collection_name: str
     limit: int
     output_fields: List[str]
     query: str
+
+
+class QueryRow(BaseModel):
+    id: int
+    entity: dict
+    distance: float
+
+
+class MilvusQueryResult(BaseModel):
+    result: List[List[QueryRow]]
 
 
 class MilvusDatabase:
@@ -45,11 +56,13 @@ class MilvusDatabase:
             self._client.create_collection(
                 collection_name=collection_name,
                 dimension=dimension,
+                auto_id=True
             )
 
-    def insert(self, insert: MulvusInsert) -> MulvusInsertResult:
-        assert isinstance(insert, MulvusInsert)
-        self.try_create_collection(insert.collection_name, self._dimension)
+    def insert(self, insert: MilvusInsert) -> MilvusInsertResult:
+        assert isinstance(insert, MilvusInsert)
+        self.try_create_collection(
+            insert.collection_name, self._dimension, insert.drop_if_exists)
         docs = [row.text for row in insert.texts]
         vectors = self._embedding_fn.encode_documents(docs)
         data = [
@@ -60,19 +73,29 @@ class MilvusDatabase:
         res = self._client.insert(
             collection_name=insert.collection_name, data=data)
         logger.info(res)
-        return MulvusInsertResult(insert_count=res.get(
+        return MilvusInsertResult(insert_count=res.get(
             "insert_count", -1), ids=res.get("ids", []))
 
-    def search(self, query: MulvusQuery):
-        assert isinstance(query, MulvusQuery)
+    def search(self, query: MilvusQuery):
+        assert isinstance(query, MilvusQuery)
         query_vectors = self._embedding_fn.encode_queries([query.query])
-        res = self._client.search(
+        data = self._client.search(
             collection_name=query.collection_name,  # target collection
             data=query_vectors,  # query vectors
             limit=query.limit,  # number of returned entities
             output_fields=query.output_fields  # specifies fields to be returned
         )
-        return res
+
+        result = []
+        for record in data:
+            rows = []
+            for item in record:
+                row = QueryRow(id=item["id"], distance=item["distance"],
+                                 entity=item["entity"])
+                rows.append(row)
+            result.append(rows)
+
+        return MilvusQueryResult(result=result)
 
 
 class MilvusApplication:
@@ -100,12 +123,12 @@ class MilvusApplication:
         return jsonify(res)
 
     def _handle_insert(self):
-        insert: MulvusInsert = self._from_json(MulvusInsert)
+        insert: MilvusInsert = self._from_json(MilvusInsert)
         res = self._database.insert(insert)
         return self._to_json(res)
 
     def _handle_search(self):
-        query: MulvusQuery = self._from_json(MulvusQuery)
+        query: MilvusQuery = self._from_json(MilvusQuery)
         res = self._database.search(query)
         return self._to_json(res)
 
