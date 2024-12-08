@@ -1,48 +1,17 @@
 from flask import Flask, jsonify, request
-from typing import List, Type
+from typing import Type
 from pymilvus import MilvusClient
 from pymilvus import model
 from pydantic import BaseModel
 from loguru import logger
+from zerolan.data.pipeline.milvus import MilvusInsert, MilvusInsertResult, MilvusQuery, QueryRow, MilvusQueryResult
 
-
-class InsertRow(BaseModel):
-    id: int
-    text: str
-    subject: str
-
-
-class MilvusInsert(BaseModel):
-    collection_name: str
-    drop_if_exists: bool = False
-    texts: List[InsertRow]
-
-
-class MilvusInsertResult(BaseModel):
-    insert_count: int
-    ids: List[int]
-
-
-class MilvusQuery(BaseModel):
-    collection_name: str
-    limit: int
-    output_fields: List[str]
-    query: str
-
-
-class QueryRow(BaseModel):
-    id: int
-    entity: dict
-    distance: float
-
-
-class MilvusQueryResult(BaseModel):
-    result: List[List[QueryRow]]
+from database.milvus.config import MilvusDBConfig
 
 
 class MilvusDatabase:
-    def __init__(self, database_path: str):
-        self._milvus_path: str = database_path
+    def __init__(self, config: MilvusDBConfig):
+        self._milvus_path: str = config.db_path
         self._dimension = 768
         self._client: MilvusClient = MilvusClient(self._milvus_path)
         self._embedding_fn = model.DefaultEmbeddingFunction()

@@ -7,6 +7,7 @@ from common.abs_app import AbstractApplication
 parser = argparse.ArgumentParser()
 parser.add_argument('service', type=str)
 parser.add_argument('--model', type=str)
+parser.add_argument('--db', type=str)
 parser.add_argument('--config', type=str)
 args = parser.parse_args()
 
@@ -151,6 +152,18 @@ def vla_app(model) -> AbstractApplication:
         return app
 
 
+def vecdb_app(db):
+    if "milvus" in db:
+        config = _config["database"]["milvus"]
+        from database.milvus.milvus import MilvusApplication as App, MilvusDatabase as DB
+        from database.milvus.config import MilvusDBConfig as Config
+        db_config = config["config"]
+
+        database = DB(Config(**db_config))
+        app = App(database=database, host=config["host"], port=config["port"])
+        return app
+
+
 def get_app(service):
     if "asr" == service:
         return asr_app()
@@ -164,6 +177,8 @@ def get_app(service):
         return tts_app()
     elif "vla" == service:
         return vla_app(args.model)
+    elif "vecdb" == service:
+        return vecdb_app(args.db)
 
 
 def run(service=None):
