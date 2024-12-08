@@ -1,0 +1,4 @@
+qwen-vl-utils==0.0.8
+torchvision
+transformers
+accelerate
