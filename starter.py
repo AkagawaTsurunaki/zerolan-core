@@ -29,9 +29,14 @@ def asr_app() -> AbstractApplication:
     model_cfg = asr_config["config"][asr_id]
 
     def get_model():
+        print(asr_id)
         if asr_id == "iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1":
             from asr.paraformer.model import SpeechParaformerModel as Model
             from asr.paraformer.config import SpeechParaformerModelConfig as Config
+            return Model(Config(**model_cfg))
+        elif asr_id == "kotoba-tech/kotoba-whisper-v2.0":
+            from asr.kotoba_whisper_2.model import KotobaWhisper2 as Model
+            from asr.kotoba_whisper_2.config import KotobaWhisper2Config as Config
             return Model(Config(**model_cfg))
         else:
             raise NameError(f"No such model name (id) {asr_id}")

@@ -7,11 +7,14 @@ ASR:
   config:
     iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1:
       model_path: "iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1" # Directory of the model
-      chunk_size: [0, 10, 5]  # [0, 10, 5] 600ms, [0, 8, 4] 480ms
+      chunk_size: [ 0, 10, 5 ]  # [0, 10, 5] 600ms, [0, 8, 4] 480ms
       encoder_chunk_look_back: 4  # Number of chunks to lookback for encoder self-attention
       decoder_chunk_look_back: 1  # Number of encoder chunks to lookback for decoder cross-attention
       version: "v2.0.4" # Paraformer version
       chunk_stride: 9600  # chunk_size[1] * 960
+    kotoba-tech/kotoba-whisper-v2.0:
+      model_path: "kotoba-tech/kotoba-whisper-v2.0"
+      device: "cuda"
 
 LLM:
   id: "THUDM/chatglm3-6b" # The model you want to use
@@ -62,14 +65,14 @@ TTS:
   port: 11005 # Port of the API service you want to start
   config:
     AkagawaTsurunaki/GPT-SoVITS:
-      # Under developing for quick installing
+    # Under developing for quick installing
 
 VLA:
   ShowUI:
     id: "showlab/ShowUI-2B"
     host: "0.0.0.0"
     port: 11009
-    config: 
+    config:
       min_pixels: 200704 # 256*28*28
       max_pixels: 1053696 # 1344*28*28
       showui_model_path: "showlab/ShowUI-2B" # Directory of the model
