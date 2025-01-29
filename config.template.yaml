@@ -40,6 +40,9 @@ LLM:
     01-ai/Yi-6B-Chat:
       model_path: "01-ai/Yi-6B-Chat" # Directory of the model
       device: "cuda" # Device to run the model
+    deepseek-ai/DeepSeek-R1-Distill-Llama-8B:
+      model_path: "deepseek-ai/DeepSeek-R1-Distill-Llama-8B" # Directory of the model
+      max_length: 23000
 
 ImgCap:
   id: "Salesforce/blip-image-captioning-large" # The model you want to use
