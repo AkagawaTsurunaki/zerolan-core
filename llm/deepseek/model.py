@@ -3,7 +3,7 @@
 # export HF_ENDPOINT=https://hf-mirror.com
 from typing import Any
 
-from vllm import LLM
+from vllm import LLM, SamplingParams
 from zerolan.data.pipeline.llm import LLMQuery, LLMPrediction, Conversation, RoleEnum
 
 from common.abs_model import AbstractModel
@@ -28,7 +28,7 @@ class DeepSeekLLMModel(AbstractModel):
     def predict(self, llm_query: LLMQuery):
         text, messages = self._to_deepseek_format(llm_query)
         messages.append({'role': RoleEnum.user, 'content': text})
-        outputs = self._model.chat(messages)
+        outputs = self._model.chat(messages, SamplingParams(temperature=0.6))
         response = outputs[0].outputs[0].text
         messages.append({'role': RoleEnum.assistant, 'content': response})
         return self._to_pipeline_format(response, messages)
