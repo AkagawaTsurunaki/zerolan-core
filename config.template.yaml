@@ -43,6 +43,11 @@ LLM:
     deepseek-ai/DeepSeek-R1-Distill-Llama-8B:
       model_path: "deepseek-ai/DeepSeek-R1-Distill-Llama-8B" # Directory of the model
       max_length: 23000
+      tensor_parallel_size: 1
+    deepseek-ai/DeepSeek-R1-Distill-Qwen-14B:
+      model_path: "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B" # Directory of the model
+      max_length: 23000
+      tensor_parallel_size: 2
 
 ImgCap:
   id: "Salesforce/blip-image-captioning-large" # The model you want to use

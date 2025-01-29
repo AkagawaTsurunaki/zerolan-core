@@ -75,7 +75,7 @@ def llm_app() -> AbstractApplication:
             from llm.glm4.model import GLM4_9B_Chat_Hf as Model
             from llm.glm4.config import GLM4ModelConfig as Config
             return Model(Config(**model_cfg))
-        elif llm_id == "deepseek-ai/DeepSeek-R1-Distill-Llama-8B":
+        elif llm_id in ["deepseek-ai/DeepSeek-R1-Distill-Llama-8B", "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B"]:
             from llm.deepseek.model import DeepSeekLLMModel as Model
             from llm.deepseek.config import DeepSeekModelConfig as Config
             return Model(Config(**model_cfg))

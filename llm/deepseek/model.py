@@ -23,7 +23,7 @@ class DeepSeekLLMModel(AbstractModel):
     @log_model_loading("deepseek-ai/DeepSeek-R1-Distill-Llama-8B")
     @issue_solver()
     def load_model(self):
-        self._model = LLM(model=self._model_path, max_model_len=self._max_length)
+        self._model = LLM(model=self._model_path, max_model_len=self._max_length, tensor_parallel_size=2)
 
     def predict(self, llm_query: LLMQuery):
         text, messages = self._to_deepseek_format(llm_query)
