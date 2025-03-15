@@ -188,6 +188,8 @@ def get_app(service):
         return vla_app(args.model)
     elif "vecdb" == service:
         return vecdb_app(args.db)
+    else:
+        raise NotImplementedError("Unsupported service.")
 
 
 def run(service=None):
