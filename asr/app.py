@@ -1,3 +1,5 @@
+import os.path
+
 from flask import Flask, request, jsonify
 from loguru import logger
 
@@ -26,12 +28,16 @@ class ASRApplication(AbstractApplication):
         logger.info('Request received: processing...')
 
         query: ASRQuery = web_util.get_obj_from_json(request, ASRQuery)
-        audio_path = web_util.save_request_audio(request, prefix="asr")
+        if not os.path.exists(query.audio_path):
+            audio_path = web_util.save_request_audio(request, prefix="asr")
+        else:
+            audio_path = query.audio_path
 
         # Convert to mono channel audio file.
-        mono_audio_path = file_util.create_temp_file(prefix="asr", suffix=".wav", tmpdir="audio")
-        audio_util.convert_to_mono(audio_path, mono_audio_path, query.sample_rate)
-        query.audio_path = mono_audio_path
+        if query.channels != 1:
+            mono_audio_path = file_util.create_temp_file(prefix="asr", suffix=".wav", tmpdir="audio")
+            audio_util.convert_to_mono(audio_path, mono_audio_path, query.sample_rate)
+            query.audio_path = mono_audio_path
 
         prediction: ASRPrediction = self._model.predict(query)
 
