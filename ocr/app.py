@@ -11,16 +11,15 @@ from utils import web_util
 
 class OCRApplication(AbstractApplication):
     def __init__(self, model: AbstractModel, host: str, port: int):
-        super().__init__("ocr")
+        super().__init__(model, "ocr")
         self.host = host
         self.port = port
         self._app = Flask(__name__)
-        self._app.add_url_rule(rule='/ocr/predict', view_func=self._handle_predict,
-                               methods=["GET", "POST"])
         self._model = model
 
     def run(self):
         self._model.load_model()
+        self.init()
         self._app.run(self.host, self.port, False)
 
     def _to_pipeline_format(self) -> OCRQuery:
@@ -41,12 +40,15 @@ class OCRApplication(AbstractApplication):
             logger.info(f'Location of the image: {query.img_path}')
             return query
 
-    def _handle_predict(self):
-        query = self._to_pipeline_format()
-        assert os.path.exists(query.img_path), f"The image file does not exist: {query.img_path}"
-        prediction: OCRPrediction = self._model.predict(query)
-        logger.info(f"Model response: {prediction}")
-        return jsonify(prediction.model_dump())
+    def init(self):
+        @self._app.route("/ocr/predict", methods=["POST"])
+        def _handle_predict():
+            query = self._to_pipeline_format()
+            assert os.path.exists(query.img_path), f"The image file does not exist: {query.img_path}"
+            prediction: OCRPrediction = self._model.predict(query)
+            logger.info(f"Model response: {prediction}")
+            return jsonify(prediction.model_dump())
 
-    def _handle_stream_predict(self):
-        raise NotImplementedError()
+        @self._app.route("/ocr/stream-predict", methods=["POST"])
+        def _handle_stream_predict():
+            raise NotImplementedError()
