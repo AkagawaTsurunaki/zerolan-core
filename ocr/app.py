@@ -15,10 +15,9 @@ class OCRApplication(AbstractApplication):
         self.host = host
         self.port = port
         self._app = Flask(__name__)
-        self._model = model
 
     def run(self):
-        self._model.load_model()
+        self.model.load_model()
         self.init()
         self._app.run(self.host, self.port, False)
 
@@ -45,7 +44,7 @@ class OCRApplication(AbstractApplication):
         def _handle_predict():
             query = self._to_pipeline_format()
             assert os.path.exists(query.img_path), f"The image file does not exist: {query.img_path}"
-            prediction: OCRPrediction = self._model.predict(query)
+            prediction: OCRPrediction = self.model.predict(query)
             logger.info(f"Model response: {prediction}")
             return jsonify(prediction.model_dump())
 
