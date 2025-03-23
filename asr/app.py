@@ -37,6 +37,9 @@ class ASRApplication(AbstractApplication):
                 mono_audio_path = file_util.create_temp_file(prefix="asr", suffix=".wav", tmpdir="audio")
                 audio_util.convert_to_mono(audio_path, mono_audio_path, query.sample_rate)
                 query.audio_path = mono_audio_path
+            else:
+                # Fixed: Or it will load original file path (for example local machine)
+                query.audio_path = audio_path
 
             prediction: ASRPrediction = self.model.predict(query)
 
