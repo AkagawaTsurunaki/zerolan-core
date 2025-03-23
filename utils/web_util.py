@@ -1,10 +1,15 @@
+from typing import TypeVar, Type
+
 from flask import Request
 from pydantic import BaseModel
 
 from utils.file_util import create_temp_file
 from loguru import logger
 
-def get_obj_from_json(request: Request, type: BaseModel) -> any:
+T = TypeVar('T', bound=Type[BaseModel])
+
+
+def get_obj_from_json(request: Request, type: T) -> any:
     # If it's in multipart/form-data format, then try to get the deserialized JSON object
     json_str = request.form.get("json", None)
     if json_str is None:
