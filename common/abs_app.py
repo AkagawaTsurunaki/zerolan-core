@@ -24,13 +24,5 @@ class AbstractApplication(ABC):
     def run(self):
         pass
 
-    @abstractmethod
-    def _handle_predict(self):
-        pass
-
-    @abstractmethod
-    def _handle_stream_predict(self):
-        pass
-
     def validate_model_id(self, model_id: str):
         return self.model.model_id == model_id
