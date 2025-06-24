@@ -69,7 +69,11 @@ class SpeechParaformerModel:
         Returns:
 
         """
-        wave_nparray, sample_rate = audio_util.from_bytes_to_np_ndarray(query.audio_data, self.dtype.__name__)
+        if query.media_type.lower() != 'raw':
+            wave_nparray, sample_rate = audio_util.from_bytes_to_np_ndarray(query.audio_data, self.dtype.__name__)
+        else:
+            wave_nparray = np.frombuffer(buffer=query.audio_data, dtype=self.dtype.__name__)
+            sample_rate = query.sample_rate
         assert sample_rate and sample_rate == self._sample_rate, "The sampling rate must be 16000, otherwise the recognition results will be severely skewed."
         return self._wrapper(wave_nparray, query.is_final)
 
@@ -89,12 +93,11 @@ class SpeechParaformerModel:
         except IndexError as e:
             if "IndexError: list index out of range" in str(e):
                 logger.warning("Prediction error unexcpectedly.")
-            return None
+            raise e
         except AssertionError as e:
             if "AssertionError: choose a window size" in str(e):
                 logger.warning("Audio tensor size error.")
-            logger.exception(e)
-            return None
+            raise e
         except Exception as e:
             logger.exception(e)
-            return None
+            raise e

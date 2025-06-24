@@ -1,8 +1,8 @@
-from loguru import logger
-
-
 from functools import wraps
 from time import time
+
+import requests
+from loguru import logger
 
 
 def log_model_loading(model_info):
@@ -23,4 +23,17 @@ def log_model_loading(model_info):
 
         return wrapper
 
+    return decorator
+
+
+def issue_solver():
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            try:
+                func(*args, **kwargs)
+            except requests.exceptions.ConnectTimeout as e:
+                logger.error("You may need proxy. Try use `export HF_ENDPOINT=https://hf-mirror.com`?")
+                raise e
+        return wrapper
     return decorator

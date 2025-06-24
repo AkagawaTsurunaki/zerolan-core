@@ -48,7 +48,6 @@ class GLM4_9B_Chat_Hf(AbstractModel):
         gen_kwargs = {"max_length": self._max_length, "do_sample": True, "top_k": 1}
         with torch.no_grad():
             outputs = self._model.generate(**inputs, **gen_kwargs)
-            print(dir(self._model))
             outputs = outputs[:, inputs['input_ids'].shape[1]:]
             output = self._tokenizer.decode(outputs[0], skip_special_tokens=True)
 

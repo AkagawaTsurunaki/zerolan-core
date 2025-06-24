@@ -10,19 +10,14 @@ from utils import web_util
 class ImgCapApplication(AbstractApplication):
 
     def __init__(self, model: AbstractModel, host: str, port: int):
-        super().__init__("image-captioning")
+        super().__init__(model, "image-captioning")
         self.host = host
         self.port = port
         self._app = Flask(__name__)
-        # Warning: Here! Compatible with legacy APIs.
-        self._app.add_url_rule(rule='/image-captioning/predict', view_func=self._handle_predict,
-                               methods=["GET", "POST"])
-        self._app.add_url_rule(rule='/img-cap/predict', view_func=self._handle_predict,
-                               methods=["GET", "POST"])
-        self._model = model
 
     def run(self):
-        self._model.load_model()
+        self.model.load_model()
+        self.init()
         self._app.run(self.host, self.port, False)
 
     def _to_pipeline_format(self) -> ImgCapQuery:
@@ -42,11 +37,14 @@ class ImgCapApplication(AbstractApplication):
             logger.info(f'Location of the image: {query.img_path}')
             return query
 
-    def _handle_predict(self):
-        query = self._to_pipeline_format()
-        prediction: ImgCapPrediction = self._model.predict(query)
-        logger.info(f'Model response: {prediction.caption}')
-        return jsonify(prediction.model_dump())
+    def init(self):
+        @self._app.route('/img-cap/predict', methods=['POST'])
+        def _handle_predict():
+            query = self._to_pipeline_format()
+            prediction: ImgCapPrediction = self.model.predict(query)
+            logger.info(f'Model response: {prediction.caption}')
+            return jsonify(prediction.model_dump())
 
-    def _handle_stream_predict(self):
-        raise NotImplementedError("Not Implemented!")
+        @self._app.route('/img-cap/stream-predict', methods=['POST'])
+        def _handle_stream_predict():
+            raise NotImplementedError("Not Implemented!")

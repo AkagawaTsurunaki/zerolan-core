@@ -1,6 +1,6 @@
 # ZerolanCore
 
-![Static Badge](https://img.shields.io/badge/Python-3.10-blue) ![Static Badge](https://img.shields.io/badge/Docker-Supported-blue) ![Static Badge](https://img.shields.io/badge/LLM-purple) ![Static Badge](https://img.shields.io/badge/ASR-purple) ![Static Badge](https://img.shields.io/badge/TTS-purple) ![Static Badge](https://img.shields.io/badge/OCR-purple) ![Static Badge](https://img.shields.io/badge/Image%20Captioning-purple) ![Static Badge](https://img.shields.io/badge/Video%20Captioning-purple) ![Static Badge](https://img.shields.io/badge/License-MIT-orange) ![Static Badge](https://img.shields.io/badge/ver-1.0-green) 
+![Static Badge](https://img.shields.io/badge/Python-3.10-blue) ![Static Badge](https://img.shields.io/badge/Docker-Supported-blue) ![Static Badge](https://img.shields.io/badge/LLM-purple) ![Static Badge](https://img.shields.io/badge/ASR-purple) ![Static Badge](https://img.shields.io/badge/TTS-purple) ![Static Badge](https://img.shields.io/badge/OCR-purple) ![Static Badge](https://img.shields.io/badge/Image%20Captioning-purple) ![Static Badge](https://img.shields.io/badge/Video%20Captioning-purple) ![Static Badge](https://img.shields.io/badge/License-MIT-orange) ![Static Badge](https://img.shields.io/badge/ver-1.2-green) 
 
 ZerolanCore 集成了众多开源的、可本地部署的人工智能模型或服务，旨在使用统一的管线设计封装大语言模型（LLM）、自动语音识别（ASR）、文本转语音（TTS）、图像字幕（Image Captioning）、光学字符识别（OCR）、视频字幕（Video Captioning）等一系列的人工智能模型，并可以使用统一的配置文件和服务启动器快速部署和启动 AI 服务。
 
@@ -88,7 +88,7 @@ pip install -r ./asr/paraformer/requirements.txt
 python starter.py asr
 ```
 
-你也可以使用参数 `llm`、`img_cap`、`ocr`、`vid_cap`、`tts` 等，详见 `starter.py`。
+你也可以使用参数 `llm`、`imgcap`、`ocr`、`tts`、`vla`、`vecdb` 等，详见 `starter.py`。
 
 如果你的终端上没有报错，且看到了模型的加载进度条，且有类似网络 IP 的字样，则可视为启动成功。
 
@@ -126,9 +126,10 @@ python starter.py asr
 
 识别一段自然语言语音，将其内容转换为文本字符串。
 
-| 模型名称                                                                                                                                                                          | 支持语言 | 显存占用    |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------|---------|
-| [iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1](https://www.modelscope.cn/models/iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1) | 中英   | 0.5 GiB |
+| 模型名称                                                                                                                                                                        | 支持语言 | 显存占用    |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+| [iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1](https://www.modelscope.cn/models/iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1) | 中英  | 0.5 GiB |
+| [kotoba-tech/kotoba-whisper-v2.0](https://huggingface.co/kotoba-tech/kotoba-whisper-v2.0) | 日   | 0.5 GiB |
 
 > [!NOTE]
 >
@@ -144,7 +145,7 @@ python starter.py asr
 
 > [!IMPORTANT]
 > 
-> 1. [GPT-SoVITS](https://github.com/AkagawaTsurunaki/GPT-SoVITS) 的安装教程请参考官方 `README.md`，请注意必须是[此 Forked 版本](https://github.com/AkagawaTsurunaki/GPT-SoVITS)才能与本项目的接口适配。你需要切换到 `dev` 分支，然后按照运行 `api.py` 的方式运行 `zerolan.py` 即可，因为实际上 `zerolan.py` 只是修改了接口中端点内容。
+> 1. [GPT-SoVITS](https://github.com/AkagawaTsurunaki/GPT-SoVITS) 的安装教程请参考官方 `README.md`，请注意必须是[此 Forked 版本](https://github.com/AkagawaTsurunaki/GPT-SoVITS)才能与本项目的接口适配。**不要使用官方的整合包，因为接口实现与本项目不匹配。**
 
 ### 图像字幕模型
 
@@ -171,6 +172,16 @@ python starter.py asr
 | 模型名称                                                               | 支持语言   | 显存占用    |
 |--------------------------------------------------------------------|--------|---------|
 | [paddlepaddle/PaddleOCR](https://gitee.com/paddlepaddle/PaddleOCR) | 中英法德韩日 | 0.2 GiB |
+
+### 视觉语言模型代理
+
+根据图片的内容以及用户文本指令的指导，执行某种动作。
+
+| 模型名称                             | 支持语言   | 显存占用    |
+|----------------------------------------------------|--------|---------|
+| [showlab/ShowUI](https://github.com/showlab/ShowUI) | 中英 | 10.9 GiB |
+
+1. [showlab/ShowUI](https://github.com/showlab/ShowUI) 可以在用户指令和给定图片中模拟人类操作 UI 界面给予动作反馈。例如你可以使用“点击搜索按钮”。
 
 ## License
 
