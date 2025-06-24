@@ -88,7 +88,7 @@ pip install -r ./asr/paraformer/requirements.txt
 python starter.py asr
 ```
 
-你也可以使用参数 `llm`、`img_cap`、`ocr`、`vid_cap`、`tts` 等，详见 `starter.py`。
+你也可以使用参数 `llm`、`imgcap`、`ocr`、`tts`、`vla`、`vecdb` 等，详见 `starter.py`。
 
 如果你的终端上没有报错，且看到了模型的加载进度条，且有类似网络 IP 的字样，则可视为启动成功。
 
