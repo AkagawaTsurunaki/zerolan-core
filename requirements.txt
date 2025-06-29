@@ -1,3 +1,4 @@
 loguru
 flask
+pyyaml
 git+https://github.com/AkagawaTsurunaki/zerolan-data.git@dev

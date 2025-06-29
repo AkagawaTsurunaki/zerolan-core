@@ -1,6 +1,6 @@
 # Tested only on this version, other versions are unknown
 # 2.3.1+cu121
-torch
+torch==2.3.1
 # numpy of newer version will raise errors.
 numpy==1.26.4
 
