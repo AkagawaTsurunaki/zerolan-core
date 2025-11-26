@@ -20,8 +20,8 @@ def catch_error(callable):
     except AssertionError as e:
         if 'Only one of "bf16", "fp16", "fp32" can be true' in str(e):
             logger.error(
-                "You may be using a quantized model; if so, set the `precise` parameter to `null`.")
-            exit()
+                "Tips: You may be using a quantized model; if so, set the `precise` parameter to `null`.")
+        raise e
 
 
 class Qwen7BChat(AbstractModel):
