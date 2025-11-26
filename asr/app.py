@@ -34,20 +34,24 @@ class ASRApplication(AbstractApplication):
             # Convert to mono channel audio file.
             # Warning: Using ffmpeg for conversion can create performance issues
             if query.channels != 1:
-                mono_audio_path = file_util.create_temp_file(prefix="asr", suffix=".wav", tmpdir="audio")
-                audio_util.convert_to_mono(audio_path, mono_audio_path, query.sample_rate)
+                mono_audio_path = file_util.create_temp_file(
+                    prefix="asr", suffix=".wav", tmpdir="audio")
+                audio_util.convert_to_mono(
+                    audio_path, mono_audio_path, query.sample_rate)
                 query.audio_path = mono_audio_path
             else:
                 # Fixed: Or it will load original file path (for example local machine)
                 query.audio_path = audio_path
 
             prediction: ASRPrediction = self.model.predict(query)
+            logger.info(f"Response: {prediction.transcript}")
 
             return jsonify(prediction.model_dump())
 
         @self._app.route('/asr/stream-predict', methods=['POST'])
         def handle_stream_predict():
-            query: ASRStreamQuery = web_util.get_obj_from_json(request, ASRStreamQuery)
+            query: ASRStreamQuery = web_util.get_obj_from_json(
+                request, ASRStreamQuery)
             audio_data = web_util.get_request_audio_file(request).stream.read()
             query.audio_data = audio_data
 
