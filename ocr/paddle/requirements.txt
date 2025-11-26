@@ -1,2 +1,3 @@
 paddlepaddle-gpu
-paddleocr
+# Higher version will cause no attribute error.
+paddleocr==2.8.1
