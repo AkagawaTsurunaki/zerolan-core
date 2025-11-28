@@ -100,32 +100,28 @@ class Qwen7BChat(AbstractModel):
 
     @staticmethod
     def _to_qwen_format(llm_query: LLMQuery) -> (str, list[tuple[str, str]], str):
-        history_content_list: list[str] = [
-            c.content for c in llm_query.history]
+        history_content_list = [c.content for c in llm_query.history]
 
         sys_prompt = None
         history = []
-        # Concat system prompt to common user input.
-        if len(llm_query.history) > 0:
-            if llm_query.history[0].role == "system":
-                sys_prompt = llm_query.history[0].content
-                if len(history_content_list) > 0:
-                    history_content_list = history_content_list[1:]
-                    history_content_list[0] = sys_prompt + \
-                        history_content_list[0]
 
-            assert len(
-                history_content_list) % 2 == 0, f'The length of items of the history must be even number.'
+        if llm_query.history and llm_query.history[0].role == "system":
+            sys_prompt = llm_query.history[0].content
+            history_content_list = history_content_list[1:]
 
-            # Convert to tuple.
-            history: list[tuple] = []
+            if history_content_list:
+                history_content_list[0] = sys_prompt + history_content_list[0]
 
-            for i in range(0, len(history_content_list), 2):
-                history.append(
-                    (history_content_list[i], history_content_list[i + 1]))
+        if len(history_content_list) % 2 != 0:
+            raise ValueError(
+                "The number of history messages must be even (user and assistant turns must come in pairs).")
 
-        text = llm_query.text
-        return text, history, sys_prompt
+        history = [
+            (history_content_list[i], history_content_list[i + 1])
+            for i in range(0, len(history_content_list), 2)
+        ]
+
+        return llm_query.text, history, sys_prompt
 
     @staticmethod
     def _to_pipeline_format(response: str, history: list[tuple[str, str]], sys_prompt: str) -> LLMPrediction:
