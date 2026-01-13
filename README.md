@@ -160,6 +160,19 @@ EOF
 > 
 > 1. [GPT-SoVITS](https://github.com/AkagawaTsurunaki/GPT-SoVITS) 的安装教程请参考官方 `README.md`，请注意必须是[此 Forked 版本](https://github.com/AkagawaTsurunaki/GPT-SoVITS)才能与本项目的接口适配。**不要使用官方的整合包，因为接口实现与本项目不匹配。**
 
+关于 GPT-SoVITS 详细的启动方法如下。
+
+首先将项目克隆下来，切换到 `zerolan` 分支
+
+```shell
+git clone https://github.com/AkagawaTsurunaki/GPT-SoVITS.git
+cd GPT-SoVITS
+# 假设你已经按照 GPT-SoVITS 官方的 README.md 配置好了环境（步骤比较多，请保持耐心）
+python zerolan_api.py -a 127.0.0.1 -p 11004
+```
+
+需要下载 nltk_data
+
 ### 图像字幕模型
 
 识别一张图片，生成对这张图片内容的文字描述。
