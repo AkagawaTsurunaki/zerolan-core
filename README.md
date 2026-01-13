@@ -115,13 +115,15 @@ python starter.py asr
 | [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) | 中英     | ✅️        | 11.5 GiB                                                     |
 | [01-ai/Yi-6B-Chat](https://www.modelscope.cn/models/01ai/Yi-6B-Chat) | 中英     | ❌️        | 10.0 GiB                                                     |
 | [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) | 日英     | ❌️        | 11.4 GiB                                                     |
+| [Ollama](https://github.com/ollama/ollama)                   | 多语     | ✅️        | 取决于本地模型                                               |
 
 > [!NOTE]
 >
 > 1. [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3) 偶尔存在**中文夹杂英文**的现象，且量化精度越低这种现象越严重。
 > 2. [THUDM/GLM-4](https://github.com/THUDM/GLM-4)  在工具调用时返回的 JSON 字符串高概率存在 **JSON 语法错误**。
 > 3. [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) 测试时发现使用多卡推理可能会**报错**，因此您应该使用**单卡推理**。
-
+> 4. [Ollama](https://github.com/ollama/ollama) 确保本机已安装并启动 **Ollama 服务** ，默认 API 地址为 `http://localhost:11434`。
+> 
 ### 自动语音识别模型
 
 识别一段自然语言语音，将其内容转换为文本字符串。
