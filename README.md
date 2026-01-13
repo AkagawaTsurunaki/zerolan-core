@@ -1,50 +1,40 @@
 # ZerolanCore
 
-![Static Badge](https://img.shields.io/badge/Python-3.10-blue) ![Static Badge](https://img.shields.io/badge/Docker-Supported-blue) ![Static Badge](https://img.shields.io/badge/LLM-purple) ![Static Badge](https://img.shields.io/badge/ASR-purple) ![Static Badge](https://img.shields.io/badge/TTS-purple) ![Static Badge](https://img.shields.io/badge/OCR-purple) ![Static Badge](https://img.shields.io/badge/Image%20Captioning-purple) ![Static Badge](https://img.shields.io/badge/Video%20Captioning-purple) ![Static Badge](https://img.shields.io/badge/License-MIT-orange) ![Static Badge](https://img.shields.io/badge/ver-1.2-green) 
+![Static Badge](https://img.shields.io/badge/Python-3.10-blue) ![Static Badge](https://img.shields.io/badge/LLM-purple) ![Static Badge](https://img.shields.io/badge/ASR-purple) ![Static Badge](https://img.shields.io/badge/TTS-purple) ![Static Badge](https://img.shields.io/badge/OCR-purple) ![Static Badge](https://img.shields.io/badge/Image%20Captioning-purple) ![Static Badge](https://img.shields.io/badge/Video%20Captioning-purple) ![Static Badge](https://img.shields.io/badge/License-MIT-orange) ![Static Badge](https://img.shields.io/badge/ver-1.2-green) 
 
 ZerolanCore 集成了众多开源的、可本地部署的人工智能模型或服务，旨在使用统一的管线设计封装大语言模型（LLM）、自动语音识别（ASR）、文本转语音（TTS）、图像字幕（Image Captioning）、光学字符识别（OCR）、视频字幕（Video Captioning）等一系列的人工智能模型，并可以使用统一的配置文件和服务启动器快速部署和启动 AI 服务。
 
 >  相关项目：[ZerolanLiveRobot](https://github.com/AkagawaTsurunaki/ZerolanLiveRobot)、[ZerolanData](https://github.com/AkagawaTsurunaki/zerolan-data)
-
-## 部署准备工作
-
-假设你已经具有足够显存的系统，并安装了 Python、Anaconda（可选）和 Docker（可选），让我们开始吧。
 
 ### 项目核心结构
 
 本项目的核心模块结构如下，你可以根据需要选择安装不同类型的 AI 模型：
 
 ```
-├─ llm		# 大语言模型
+├─ asr		# 自动语音识别模型
 ├─ img_cap  # 图像字幕模型
 ├─ ...
-└─ asr		# 自动语音识别模型
+└─ llm		# 大语言模型
     ├─ app.py		# 统一的应用封装，每个 AI 模型模块都由它的父模块中的这个 app.py 以 Web 服务器的形式加载并启动
     └─ paraformer	# 指定模型名称（通常是简写）
        ├─ config.py           # 该模型的配置文件
-       ├─ Dockerfile          # 该模型的 Docker 文件，能构建支持运行本模型 Docker Container
        ├─ model.py			  # 封装了该模型，并遵循了统一的 Pipeline API（意味着同一类模型的对外接口统一，即便官方实现的接口各有不同）
+       ├─ pyproject.toml	  # uv 生成的项目配置清单（若存在，强烈推荐使用这个）
+       ├─ uv.lock       	  # uv 生成的依赖配置清单，严格记录了这个模型的依赖项（若存在，强烈推荐使用这个）
        └─ requirements.txt    # 运行该模型需要的 Python 依赖
 ```
 
 ### 运行环境构建
 
-以 Docker 为例，如果想要部署 [iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1](https://www.modelscope.cn/models/iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1)，我们需要找到 `./asr/paraformer/Dockerfile` 中的 Docker 文件，然后运行以下指令：
+你可以选择使用 Anaconda 或 uv 构建运行环境，或者直接使用 `pyenv` 建立虚拟环境，并使用 `pip` 进行安装。
 
-```shell
-docker build ./asr/paraformer --tag speech_paraformer_asr
-docker run -d --gpus all -it -p 11001:11001 --name my_conatainer speech_paraformer_asr
-```
+>  [!IMPORTANT]
+>
+> 由于不同的模型所需要的环境各不相同，强烈建议为每个模型使用相互隔离的 Python 环境，以免出现依赖冲突等问题。
 
-这将构建一个 tag 为 `speech_paraformer_asr` 的 Docker 镜像，并基于此镜像运行一个使用全部 GPU，对外暴露 11001 端口的 Docker Container，并指定这个容器的名称为 `my_conatainer`。
+一旦本项目中的某些模型的依赖配置清单被作者严格筛查，你就可以在本文档的后续中看到运行它的命令，它几乎可以很大程度上保证你的模型不会报错，因此强烈建议使用 uv。但是，某些模型的配置清单还没有来得及严格审查，所以有些模型还需要用 Anaconda 创建环境。
 
-> [!IMPORTANT]
-> 
-> Docker 文件中指定了一些镜像，这是为了更快的下载和构建。如果你不需要它们，请根据实际需求删除这些指令。
-
-如果不希望构建 Docker Container，可以在 Anaconda 中建立多个虚拟环境，或者直接使用 `pyenv` 建立虚拟环境，并使用 `pip` 进行安装。
-
-以 Anaconda 为例，运行以下命令：
+如果你选择使用 Anaconda，以 `speech_paraformer_asr` 模型为例，运行以下命令：
 
 ```shell
 conda create --name speech_paraformer_asr python=3.10
@@ -61,10 +51,6 @@ pip install -r ./asr/paraformer/requirements.txt
 ```
 
 这将会自动下载并安装所有依赖。
-
->  [!IMPORTANT]
->
-> 由于不同的模型所需要的环境各不相同，强烈建议为每个模型使用相互隔离的 Python 环境，以免出现依赖冲突等问题。
 
 其他模型的运行环境构建类似，此不赘述。
 
@@ -111,7 +97,7 @@ python starter.py asr
 | 模型名称                                                     | 支持语言 | 流式推理 | 显存占用                                                     |
 | ------------------------------------------------------------ | -------- | -------- | ------------------------------------------------------------ |
 | [THUDM/GLM-4](https://github.com/THUDM/GLM-4)                | 中英     |     ❌️     | 19.2 GiB                                                     |
-| [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3)       | 中英     | ✅️        | 无量化 11.5 GiB \| 8-Bit 量化 6.6  GiB \| 4-Bit 量化 4.0 GiB |
+| [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3)       | 中英     | ✅️        | 无量化 12.4 GiB \| 8-Bit 量化 7.5  GiB \| 4-Bit 量化 4.6 GiB |
 | [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) | 中英     | ✅️        | 11.5 GiB                                                     |
 | [01-ai/Yi-6B-Chat](https://www.modelscope.cn/models/01ai/Yi-6B-Chat) | 中英     | ❌️        | 10.0 GiB                                                     |
 | [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) | 日英     | ❌️        | 11.4 GiB                                                     |
@@ -121,6 +107,33 @@ python starter.py asr
 > 1. [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3) 偶尔存在**中文夹杂英文**的现象，且量化精度越低这种现象越严重。
 > 2. [THUDM/GLM-4](https://github.com/THUDM/GLM-4)  在工具调用时返回的 JSON 字符串高概率存在 **JSON 语法错误**。
 > 3. [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) 测试时发现使用多卡推理可能会**报错**，因此您应该使用**单卡推理**。
+
+以下命令用于创建 THUDM/chatglm3-6b 的运行环境：
+
+```shell
+cd llm/chatglm3
+uv sync
+source .venv/bin/activate
+cd ../../
+uv run starter.py llm
+```
+
+以下命令用于测试模型是否正常工作：
+
+```shell
+curl -X POST http://localhost:11002/llm/predict \
+  -H "Content-Type: application/json" \
+  -d @- <<EOF
+{
+  "text": "What is my name?",
+  "history": [
+    {"content": "You are a helpful assistant!", "metadata":null, "role":"system"},
+    {"content": "My name is AkagawaTsurunaki.", "metadata":null, "role":"user"},
+    {"content": "Hello, AkagawaTsurunaki.", "metadata":null, "role":"assistant"}
+  ]
+}
+EOF
+```
 
 ### 自动语音识别模型
 
