@@ -68,4 +68,4 @@ class Yi6B_Chat(AbstractModel):
     def _to_pipeline_format(response, messages):
         messages.append({"role": "assistant", "content": response})
         history = [Conversation(role=c['role'], content=c['content']) for c in messages]
-        return LLMPrediction(response, history)
+        return LLMPrediction(response=response, history=history)
