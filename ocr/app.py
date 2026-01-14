@@ -1,6 +1,6 @@
 import os.path
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from loguru import logger
 from zerolan.data.pipeline.ocr import OCRQuery, OCRPrediction
 
@@ -25,7 +25,7 @@ class OCRApplication(AbstractApplication):
         with self._app.app_context():
             logger.info('Request received: processing...')
 
-            if request.headers['Content-Type'] == 'application/json':
+            if 'application/json' in request.headers['Content-Type']:
                 # If it's in JSON format, then there must be an image location.
                 json_val = request.get_json()
                 query = OCRQuery.model_validate(json_val)
@@ -46,6 +46,12 @@ class OCRApplication(AbstractApplication):
             assert os.path.exists(query.img_path), f"The image file does not exist: {query.img_path}"
             prediction: OCRPrediction = self.model.predict(query)
             logger.info(f"Model response: {prediction}")
+            return Response(
+                response=prediction.model_dump_json(),
+                status=200,
+                mimetype='application/json',
+                headers={'Content-Type': 'application/json; charset=utf-8'}
+            )
             return jsonify(prediction.model_dump())
 
         @self._app.route("/ocr/stream-predict", methods=["POST"])
