@@ -1,0 +1,21 @@
+[project]
+name = "qwen"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "accelerate==0.33.0",
+    "dataclasses-json==0.6.7",
+    "einops==0.8.0",
+    "flask==3.0.3",
+    "loguru==0.7.2",
+    "tiktoken==0.7.0",
+    "torch==2.3.1",
+    "transformers==4.32.0",
+    "transformers-stream-generator==0.0.5",
+    "zerolan-data",
+]
+
+[tool.uv.sources]
+zerolan-data = { git = "https://github.com/AkagawaTsurunaki/zerolan-data.git", rev = "1.5.0" }
