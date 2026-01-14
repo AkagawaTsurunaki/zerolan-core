@@ -94,13 +94,13 @@ python starter.py asr
 
 根据自然语言上下文进行推理，遵循用户指令，并给予文字响应。
 
-| 模型名称                                                     | 支持语言 | 流式推理 | 显存占用                                                     |
-| ------------------------------------------------------------ | -------- | -------- | ------------------------------------------------------------ |
-| [THUDM/GLM-4](https://github.com/THUDM/GLM-4)                | 中英     |     ❌️     | 19.2 GiB                                                     |
+| 模型名称                                                     | 支持语言 | 流式推理 | 显存占用                                                  |
+| ------------------------------------------------------------ | -------- | -------- |-------------------------------------------------------|
+| [THUDM/GLM-4](https://github.com/THUDM/GLM-4)                | 中英     |     ❌️     | 19.2 GiB                                              |
 | [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3)       | 中英     | ✅️        | 无量化 12.4 GiB \| 8-Bit 量化 7.5  GiB \| 4-Bit 量化 4.6 GiB |
-| [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) | 中英     | ✅️        | 11.5 GiB                                                     |
-| [01-ai/Yi-6B-Chat](https://www.modelscope.cn/models/01ai/Yi-6B-Chat) | 中英     | ❌️        | 10.0 GiB                                                     |
-| [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) | 日英     | ❌️        | 11.4 GiB                                                     |
+| [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) | 中英     | ✅️        | 15.3 GiB                                              |
+| [01-ai/Yi-6B-Chat](https://www.modelscope.cn/models/01ai/Yi-6B-Chat) | 中英     | ❌️        | 10.0 GiB                                              |
+| [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) | 日英     | ❌️        | 11.4 GiB                                              |
 
 > [!NOTE]
 >
@@ -108,10 +108,20 @@ python starter.py asr
 > 2. [THUDM/GLM-4](https://github.com/THUDM/GLM-4)  在工具调用时返回的 JSON 字符串高概率存在 **JSON 语法错误**。
 > 3. [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) 测试时发现使用多卡推理可能会**报错**，因此您应该使用**单卡推理**。
 
-以下命令用于创建 THUDM/chatglm3-6b 的运行环境：
+以下命令用于创建 [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3) 的运行环境：
 
 ```shell
 cd llm/chatglm3
+uv sync
+source .venv/bin/activate
+cd ../../
+uv run starter.py llm
+```
+
+以下命令用于创建 [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) 的运行环境：
+
+```shell
+cd llm/qwen
 uv sync
 source .venv/bin/activate
 cd ../../
