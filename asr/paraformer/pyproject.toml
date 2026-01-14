@@ -1,0 +1,18 @@
+[project]
+name = "paraformer"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "flask>=3.1.2",
+    "funasr==1.1.4",
+    "loguru>=0.7.3",
+    "numpy==1.26.4",
+    "torch==2.3.1",
+    "torchaudio==2.3.1",
+    "zerolan-data",
+]
+
+[tool.uv.sources]
+zerolan-data = { git = "https://github.com/AkagawaTsurunaki/zerolan-data.git", rev = "1.5.0" }
