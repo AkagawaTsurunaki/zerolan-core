@@ -206,6 +206,24 @@ EOF
 >
 > 1. [iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1](https://www.modelscope.cn/models/iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1) 在本项目没有使用**符号分割**和**音频激活**子模型，如有需要请[查看此处](https://www.modelscope.cn/models/iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1)。
 
+使用此命令创建 [iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1](https://www.modelscope.cn/models/iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1) 的环境并启动模型：
+
+```shell
+cd asr/paraformer
+uv sync
+source .venv/bin/activate
+cd ../../
+uv run starter.py asr
+```
+
+测试模型的语音识别是否正常（注意需要从项目所在目录作为当前工作目录执行）：
+
+```shell
+curl -X POST http://localhost:11001/asr/predict \
+  -F "audio=@tests/resources/tts-test.wav;type=audio/wav" \
+  -F "json={\"audio_path\": \"\", \"channels\": 2};type=application/json"
+```
+
 ### 文本转语音模型
 
 根据给定的参考音频和文本，生成对应的语音。
