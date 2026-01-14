@@ -1,6 +1,6 @@
 import os.path
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from loguru import logger
 
 from common.abs_app import AbstractApplication
@@ -42,8 +42,12 @@ class ASRApplication(AbstractApplication):
                 query.audio_path = audio_path
 
             prediction: ASRPrediction = self.model.predict(query)
-
-            return jsonify(prediction.model_dump())
+            return Response(
+                response=prediction.model_dump_json(),
+                status=200,
+                mimetype='application/json',
+                headers={'Content-Type': 'application/json; charset=utf-8'}
+            )
 
         @self._app.route('/asr/stream-predict', methods=['POST'])
         def handle_stream_predict():
