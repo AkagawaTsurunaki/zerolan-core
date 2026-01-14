@@ -89,6 +89,8 @@ python starter.py asr
 > 如果运行的模型所需要显存大小，远远超过你的系统的显存与内存之和，这可能造成**系统崩溃**。
 >
 > 因此在模型加载的过程中，请时刻留意你的系统资源状况。在 Windows 中，使用 `CTRL` + `SHIFT` + `ECS` 调出任务管理器进行监视；Ubuntu 上可以使用`nvtop` 监视显存占用，使用 `top` 监视内存占用。
+>
+> 需要注意的是，以下表格中的显存占用数据是，模型启动后执行一次回复后的显存占用结果，但是随着推理的进行，可能会出现显存占用稍微增加的现象，如果您的显卡显存较小，请尤其注意。
 
 ### 大语言模型
 
@@ -100,15 +102,16 @@ python starter.py asr
 | [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3)       | 中英     | ✅️        | 无量化 12.4 GiB \| 8-Bit 量化 7.5  GiB \| 4-Bit 量化 4.6 GiB |
 | [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) | 中英     | ✅️        | 15.3 GiB                                              |
 | [01-ai/Yi-6B-Chat](https://www.modelscope.cn/models/01ai/Yi-6B-Chat) | 中英     | ❌️        | 10.0 GiB                                              |
-| [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) | 日英     | ❌️        | 11.4 GiB                                              |
+| [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) | 日英     | ❌️        | 16.0 GiB                                              |
 
 > [!NOTE]
 >
 > 1. [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3) 偶尔存在**中文夹杂英文**的现象，且量化精度越低这种现象越严重。
 > 2. [THUDM/GLM-4](https://github.com/THUDM/GLM-4)  在工具调用时返回的 JSON 字符串高概率存在 **JSON 语法错误**。
 > 3. [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) 测试时发现使用多卡推理可能会**报错**，因此您应该使用**单卡推理**。
+> 4. [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) 在测试时可能发生无法读取上下文的问题。
 
-以下命令用于创建 [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3) 的运行环境：
+以下命令用于创建 [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3) 的环境并启动模型：
 
 ```shell
 cd llm/chatglm3
@@ -118,7 +121,7 @@ cd ../../
 uv run starter.py llm
 ```
 
-以下命令用于创建 [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) 的运行环境：
+以下命令用于创建 [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) 的环境并启动模型：
 
 ```shell
 cd llm/qwen
@@ -128,23 +131,68 @@ cd ../../
 uv run starter.py llm
 ```
 
-以下命令用于测试模型是否正常工作：
+以下命令用于创建 [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) 的环境并启动模型：
+
+```shell
+cd llm/shisa
+uv sync
+source .venv/bin/activate
+cd ../../
+uv run starter.py llm
+```
+
+以下命令用于测试模型是否正常工作。
+
+测试模型的中文回复是否正常：
 
 ```shell
 curl -X POST http://localhost:11002/llm/predict \
   -H "Content-Type: application/json" \
   -d @- <<EOF
 {
-  "text": "What is my name?",
+  "text": "我的名字是什么？",
   "history": [
-    {"content": "You are a helpful assistant!", "metadata":null, "role":"system"},
-    {"content": "My name is AkagawaTsurunaki.", "metadata":null, "role":"user"},
-    {"content": "Hello, AkagawaTsurunaki.", "metadata":null, "role":"assistant"}
+    {"content": "你是一名有用的 AI 助手。", "metadata":null, "role":"system"},
+    {"content": "我的名字是赤川鹤鸣。", "metadata":null, "role":"user"},
+    {"content": "你好，赤川鹤鸣。", "metadata":null, "role":"assistant"}
   ]
 }
 EOF
 ```
 
+测试模型的英文回复是否正常：
+
+```shell
+curl -X POST http://localhost:11002/llm/predict \
+-H "Content-Type: application/json" \
+-d @- <<EOF
+{
+    "text": "What is my name?",
+    "history": [
+        {"content": "You are a helpful assistant!", "metadata":null, "role":"system"},
+        {"content": "My name is AkagawaTsurunaki.", "metadata":null, "role":"user"},
+        {"content": "Hello, AkagawaTsurunaki.", "metadata":null, "role":"assistant"}
+    ]
+}
+EOF
+```
+
+测试模型的日语回复是否正常：
+
+```shell
+curl -X POST http://localhost:11002/llm/predict \
+-H "Content-Type: application/json; charset=utf-8" \
+-d @- <<EOF
+{
+    "text": "私の名前は？",
+    "history": [
+        {"content": "貴方は素敵なアシスタントです！", "metadata":null, "role":"system"},
+        {"content": "私の名前は赤川鶴鳴です。", "metadata":null, "role":"user"},
+        {"content": "こんにちは、赤川鶴鳴さん。", "metadata":null, "role":"assistant"}
+    ]
+}
+EOF
+```
 ### 自动语音识别模型
 
 识别一段自然语言语音，将其内容转换为文本字符串。
