@@ -268,7 +268,7 @@ python zerolan_api.py -a 127.0.0.1 -p 11004
 
 ### 图像字幕模型
 
-识别一张图片，生成对这张图片内容的文字描述。
+识别一张图片，生成对这张图片内容的文字描述。用于为大语言模型提供视觉信息，但近年来的多模态模型已经开始发展，此类模型在未来可能会被弃用。
 
 | 模型名称                                                                                                    | 支持语言 | 显存占用    |
 |---------------------------------------------------------------------------------------------------------|------|---------|
@@ -277,6 +277,28 @@ python zerolan_api.py -a 127.0.0.1 -p 11004
 > [!NOTE]
 >
 > 1. [Salesforce/blip-image-captioning-large](https://huggingface.co/Salesforce/blip-image-captioning-large) 存在一定的幻觉问题，即容易生成与图片中内容无关的内容。
+
+使用此命令创建 [Salesforce/blip-image-captioning-large](https://huggingface.co/Salesforce/blip-image-captioning-large) 的环境并启动模型：
+
+```shell
+cd img_cap/blip
+uv sync
+source .venv/bin/activate
+cd ../../
+uv run starter.py imgcap
+```
+
+测试模型的图像语义识别是否正常（注意需要从项目所在目录作为当前工作目录执行）：
+
+```shell
+curl -X POST http://localhost:11003/img-cap/predict \
+-H "Content-Type: application/json; charset=utf-8" \
+-d @- <<EOF
+{
+    "img_path": "./tests/resources/imgcap-test.png"
+}
+EOF
+```
 
 ### 视频字幕模型
 
