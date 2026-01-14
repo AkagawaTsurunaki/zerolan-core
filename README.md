@@ -101,7 +101,7 @@ python starter.py asr
 | [THUDM/GLM-4](https://github.com/THUDM/GLM-4)                | 中英     |     ❌️     | 19.2 GiB                                              |
 | [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3)       | 中英     | ✅️        | 无量化 12.4 GiB \| 8-Bit 量化 7.5  GiB \| 4-Bit 量化 4.6 GiB |
 | [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) | 中英     | ✅️        | 15.3 GiB                                              |
-| [01-ai/Yi-6B-Chat](https://www.modelscope.cn/models/01ai/Yi-6B-Chat) | 中英     | ❌️        | 10.0 GiB                                              |
+| [01-ai/Yi-6B-Chat](https://www.modelscope.cn/models/01ai/Yi-6B-Chat) | 中英     | ❌️        | 23.7 GiB                                              |
 | [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) | 日英     | ❌️        | 16.0 GiB                                              |
 
 > [!NOTE]
@@ -111,7 +111,7 @@ python starter.py asr
 > 3. [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) 测试时发现使用多卡推理可能会**报错**，因此您应该使用**单卡推理**。
 > 4. [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) 在测试时可能发生无法读取上下文的问题。
 
-以下命令用于创建 [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3) 的环境并启动模型：
+使用此命令创建 [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3) 的环境并启动模型：
 
 ```shell
 cd llm/chatglm3
@@ -121,7 +121,7 @@ cd ../../
 uv run starter.py llm
 ```
 
-以下命令用于创建 [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) 的环境并启动模型：
+使用此命令创建 [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) 的环境并启动模型：
 
 ```shell
 cd llm/qwen
@@ -131,7 +131,17 @@ cd ../../
 uv run starter.py llm
 ```
 
-以下命令用于创建 [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) 的环境并启动模型：
+使用此命令创建 [01-ai/Yi-6B-Chat](https://www.modelscope.cn/models/01ai/Yi-6B-Chat) 的环境并启动模型：
+
+```shell
+cd llm/yi
+uv sync
+source .venv/bin/activate
+cd ../../
+uv run starter.py llm
+```
+
+使用此命令创建 [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) 的环境并启动模型：
 
 ```shell
 cd llm/shisa
