@@ -1,0 +1,19 @@
+[project]
+name = "yi"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "accelerate==0.33.0",
+    "dataclasses-json==0.6.7",
+    "flask==3.0.3",
+    "loguru==0.7.2",
+    "sentencepiece==0.2.0",
+    "torch==2.3.1",
+    "transformers==4.43.3",
+    "zerolan-data",
+]
+
+[tool.uv.sources]
+zerolan-data = { git = "https://github.com/AkagawaTsurunaki/zerolan-data.git", rev = "1.5.0" }
