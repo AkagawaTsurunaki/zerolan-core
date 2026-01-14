@@ -25,7 +25,12 @@ class LLMApplication(AbstractApplication):
             llm_query = self._to_pipeline_format()
             p: LLMPrediction = self.model.predict(llm_query)
             logger.info(f'Model response: {p.response}')
-            return jsonify(p.model_dump())
+            return Response(
+                response=p.model_dump_json(),
+                status=200,
+                mimetype='application/json',
+                headers={'Content-Type': 'application/json; charset=utf-8'}
+            )
 
         @self._app.route("/llm/stream-predict", methods=["POST"])
         def handle_stream_predict():
@@ -37,9 +42,13 @@ class LLMApplication(AbstractApplication):
                     for p in self.model.stream_predict(q):
                         p: LLMPrediction
                         logger.info(f'Model response (stream): {p.response}')
-                        yield jsonify(p.model_dump()).data + b'\n'
+                        yield p.model_dump_json() + '\n'
 
-            return Response(stream_with_context(generate_output(llm_query)), content_type='application/json')
+            return Response(
+                stream_with_context(generate_output(llm_query)),
+                mimetype='application/json',
+                headers={'Content-Type': 'application/json; charset=utf-8'}
+            )
 
     def _to_pipeline_format(self) -> LLMQuery:
         with self._app.app_context():
