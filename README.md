@@ -176,26 +176,7 @@ cd ../../
 uv run starter.py llm
 ```
 
-以下命令用于测试模型是否正常工作。
-
-测试模型的中文回复是否正常：
-
-```shell
-curl -X POST http://localhost:11002/llm/predict \
-  -H "Content-Type: application/json; charset=utf-8" \
-  -d @- <<EOF
-{
-  "text": "我的名字是什么？",
-  "history": [
-    {"content": "你是一名有用的 AI 助手。", "metadata":null, "role":"system"},
-    {"content": "我的名字是赤川鹤鸣。", "metadata":null, "role":"user"},
-    {"content": "你好，赤川鹤鸣。", "metadata":null, "role":"assistant"}
-  ]
-}
-EOF
-```
-
-测试模型的英文回复是否正常：
+测试模型的文字回复是否正常：
 
 ```shell
 curl -X POST http://localhost:11002/llm/predict \
@@ -212,22 +193,6 @@ curl -X POST http://localhost:11002/llm/predict \
 EOF
 ```
 
-测试模型的日语回复是否正常：
-
-```shell
-curl -X POST http://localhost:11002/llm/predict \
--H "Content-Type: application/json; charset=utf-8" \
--d @- <<EOF
-{
-    "text": "私の名前は？",
-    "history": [
-        {"content": "貴方は素敵なアシスタントです！", "metadata":null, "role":"system"},
-        {"content": "私の名前は赤川鶴鳴です。", "metadata":null, "role":"user"},
-        {"content": "こんにちは、赤川鶴鳴さん。", "metadata":null, "role":"assistant"}
-    ]
-}
-EOF
-```
 ### 自动语音识别模型
 
 识别一段自然语言语音，将其内容转换为文本字符串。
@@ -312,7 +277,29 @@ EOF
 
 | 模型名称                                                               | 支持语言   | 显存占用    |
 |--------------------------------------------------------------------|--------|---------|
-| [paddlepaddle/PaddleOCR](https://gitee.com/paddlepaddle/PaddleOCR) | 中英法德韩日 | 0.2 GiB |
+| [paddlepaddle/PaddleOCR](https://gitee.com/paddlepaddle/PaddleOCR) | 中英法德韩日 | 0.5 GiB |
+
+使用此命令创建 [paddlepaddle/PaddleOCR](https://gitee.com/paddlepaddle/PaddleOCR) 的环境并启动模型：
+
+```shell
+cd ocr/paddle
+uv sync
+source .venv/bin/activate
+cd ../../
+uv run starter.py ocr
+```
+
+测试模型的光学字符识别是否正常（注意需要从项目所在目录作为当前工作目录执行）：
+
+```shell
+curl -X POST http://localhost:11004/ocr/predict \
+-H "Content-Type: application/json; charset=utf-8" \
+-d @- <<EOF
+{
+    "img_path": "./tests/resources/ocr-test.png"
+}
+EOF
+```
 
 ### 视觉语言模型代理
 
