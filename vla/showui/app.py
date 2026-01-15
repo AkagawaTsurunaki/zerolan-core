@@ -9,7 +9,7 @@ from utils import web_util
 class ShowUIApplication(AbstractApplication):
     
     def __init__(self, model: AbstractModel, host: str, port: int):
-        super().__init__("vla/showui")
+        super().__init__(model, "vla/showui")
         self.host = host
         self.port = port
         self._app = Flask(__name__)
@@ -27,7 +27,7 @@ class ShowUIApplication(AbstractApplication):
         with self._app.app_context():
             logger.info('Request received: processing...')
 
-            if request.headers['Content-Type'] == 'application/json':
+            if 'application/json' in request.headers['Content-Type']:
                 # If it's in JSON format, then there must be an image location.
                 json_val = request.get_json()
                 query = ShowUiQuery.model_validate(json_val)
