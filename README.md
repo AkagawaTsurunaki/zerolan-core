@@ -566,6 +566,52 @@ EOF
 
 1. [showlab/ShowUI](https://github.com/showlab/ShowUI) 可以在用户指令和给定图片中模拟人类操作 UI 界面给予动作反馈。例如你可以使用“点击搜索按钮”。
 
+---
+
+使用以下命令创建 [showlab/ShowUI](https://github.com/showlab/ShowUI) 的环境并启动模型。
+
+如果使用 `uv`，运行：
+
+```shell
+cd vla/showui
+uv sync
+source .venv/bin/activate
+cd ../../
+uv run starter.py vla --model showui
+```
+
+如果使用 `Anaconda`，运行：
+
+```shell
+cd vla/showui
+conda create --name vla_showui python==3.11 --yes
+conda activate vla_showui
+pip install -e .
+cd ../../
+python starter.py vla --model showui
+```
+
+测试 ShowUI 的功能是否正常（注意需要从项目所在目录作为当前工作目录执行）：
+
+```shell
+curl -X POST http://localhost:11009/vla/showui/predict \
+-H "Content-Type: application/json; charset=utf-8" \
+-d @- <<EOF
+{
+    "img_path": "./tests/resources/ocr-test.png",
+    "query": "Where is the text?"
+}
+EOF
+```
+
+返回值应该类似：
+
+```
+{"actions":[{"action":"CLICK","env":"web","position":[0.49,0.34],"value":null}],"id":"4fa74c6a-47b0-4747-a66f-c3dfe83d462e"}
+```
+
+---
+
 ### 向量数据库
 
 存储文本等需要被编码存储和提取的内容，用于存储一些长时记忆。注意这与关系型数据库不同。
