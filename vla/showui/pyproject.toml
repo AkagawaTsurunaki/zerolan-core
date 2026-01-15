@@ -1,0 +1,20 @@
+[project]
+name = "showui"
+version = "0.1.0"
+description = "https://github.com/showlab/ShowUI https://huggingface.co/showlab/ShowUI-2B"
+requires-python = ">=3.11"
+dependencies = [
+    "accelerate>=1.12.0",
+    "flask>=3.1.2",
+    "loguru>=0.7.3",
+    "qwen-vl-utils==0.0.8",
+    "torchvision>=0.24.1",
+    "transformers>=4.57.5",
+    "zerolan-data",
+]
+
+[tool.uv.sources]
+zerolan-data = { git = "https://github.com/AkagawaTsurunaki/zerolan-data.git", rev = "1.5.0" }
+
+[tool.setuptools]
+packages = []
