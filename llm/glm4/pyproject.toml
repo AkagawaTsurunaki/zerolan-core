@@ -1,8 +1,7 @@
 [project]
 name = "glm4"
 version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
+description = "https://github.com/THUDM/GLM-4"
 requires-python = ">=3.11"
 dependencies = [
     "accelerate>=1.0.1",
@@ -30,3 +29,6 @@ dependencies = [
 
 [tool.uv.sources]
 zerolan-data = { git = "https://github.com/AkagawaTsurunaki/zerolan-data.git", rev = "1.5.0" }
+
+[tool.setuptools]
+packages = []
