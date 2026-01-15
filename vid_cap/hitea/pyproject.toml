@@ -1,0 +1,29 @@
+[project]
+name = "hitea"
+version = "0.1.0"
+description = "https://www.modelscope.cn/models/iic/multi-modal_hitea_video-captioning_base_en"
+requires-python = ">=3.10"
+dependencies = [
+    "decord>=0.6.0",
+    "fairscale>=0.4.13",
+    "fairseq>=0.12.2",
+    "flask>=3.1.2",
+    "librosa>=0.11.0",
+    "loguru>=0.7.3",
+    "modelscope[framework]>=1.33.0",
+    "opencv-python>=4.12.0.88",
+    "rapidfuzz>=3.14.3",
+    "timm>=1.0.24",
+    "torch>=2.9.1",
+    "torchvision>=0.24.1",
+    "transformers>=4.57.5",
+    "unicodedata2>=17.0.0",
+    "zerolan-data",
+    "zhconv>=1.4.3",
+]
+
+[tool.uv.sources]
+zerolan-data = { git = "https://github.com/AkagawaTsurunaki/zerolan-data.git", rev = "1.5.0" }
+
+[tool.setuptools]
+packages = []
