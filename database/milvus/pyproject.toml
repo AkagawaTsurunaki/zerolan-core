@@ -1,0 +1,20 @@
+[project]
+name = "milvus"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.11"
+dependencies = [
+    "flask>=3.1.2",
+    "loguru>=0.7.3",
+    "milvus-model>=0.2.12",
+    "pymilvus[milvus-lite]>=2.6.6",
+    "pyyaml>=6.0.3",
+    "torch>=2.9.1",
+    "zerolan-data",
+]
+
+[tool.setuptools]
+packages = []
+
+[tool.uv.sources]
+zerolan-data = { git = "https://github.com/AkagawaTsurunaki/zerolan-data.git", rev = "1.5.0" }
