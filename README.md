@@ -456,7 +456,52 @@ EOF
 
 | 模型名称                                                     | 支持语言 | 流式推理 | 显存占用 |
 | ------------------------------------------------------------ | -------- | -------- | ---- |
-| [iic/multi-modal_hitea_video-captioning_base_en](https://www.modelscope.cn/models/iic/multi-modal_hitea_video-captioning_base_en) | 英       |    ❌️      | 尚未测试 |
+| [iic/multi-modal_hitea_video-captioning_base_en](https://www.modelscope.cn/models/iic/multi-modal_hitea_video-captioning_base_en) | 英       |    ❌️      | 3.6 GiB |
+
+---
+
+使用以下命令创建 [iic/multi-modal_hitea_video-captioning_base_en](https://www.modelscope.cn/models/iic/multi-modal_hitea_video-captioning_base_en) 的环境并启动模型。
+
+如果使用 `uv`，运行：
+
+```shell
+cd vid_cap/hitea
+uv sync
+source .venv/bin/activate
+cd ../../
+uv run starter.py vidcap
+```
+
+如果使用 `Anaconda`，运行：
+
+```shell
+cd vid_cap/hitea
+conda create --name vid_cap_hitea python==3.10 --yes
+conda activate vid_cap_hitea
+pip install -e .
+cd ../../
+python starter.py vidcap
+```
+
+测试视频字幕模型的图像语义识别功能是否正常（注意需要从项目所在目录作为当前工作目录执行）：
+
+```shell
+curl -X POST http://localhost:11004/vid-cap/predict \
+-H "Content-Type: application/json; charset=utf-8" \
+-d @- <<EOF
+{
+    "vid_path": "./tests/resources/vidcap-test.mp4"
+}
+EOF
+```
+
+返回值应该类似：
+
+```
+{"caption":"anime characters are talking to each other","id":"7f2e3d71-c0e2-441b-bf54-e5c5b854f271","lang":"en"}
+```
+
+---
 
 ### 光学字符识别模型
 
