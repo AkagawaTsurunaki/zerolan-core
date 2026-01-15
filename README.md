@@ -259,7 +259,7 @@ EOF
 
 ---
 
-使用此命令创建 [iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1](https://www.modelscope.cn/models/iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1) 的环境并启动模型：
+使用以下命令创建 [iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1](https://www.modelscope.cn/models/iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1) 的环境并启动模型。
 
 如果使用 `uv`，运行：
 
@@ -284,7 +284,7 @@ python starter.py asr
 
 ---
 
-使用此命令创建 [kotoba-tech/kotoba-whisper-v2.0](https://huggingface.co/kotoba-tech/kotoba-whisper-v2.0) 的环境并启动模型：
+使用以下命令创建 [kotoba-tech/kotoba-whisper-v2.0](https://huggingface.co/kotoba-tech/kotoba-whisper-v2.0) 的环境并启动模型。
 
 如果使用 `uv`，运行：
 
@@ -360,7 +360,11 @@ python zerolan_api.py -a 127.0.0.1 -p 11004
 >
 > 1. [Salesforce/blip-image-captioning-large](https://huggingface.co/Salesforce/blip-image-captioning-large) 存在一定的幻觉问题，即容易生成与图片中内容无关的内容。
 
-使用此命令创建 [Salesforce/blip-image-captioning-large](https://huggingface.co/Salesforce/blip-image-captioning-large) 的环境并启动模型：
+---
+
+使用以下命令创建 [Salesforce/blip-image-captioning-large](https://huggingface.co/Salesforce/blip-image-captioning-large) 的环境并启动模型。
+
+如果使用 `uv`，运行：
 
 ```shell
 cd img_cap/blip
@@ -370,7 +374,20 @@ cd ../../
 uv run starter.py imgcap
 ```
 
-测试模型的图像语义识别是否正常（注意需要从项目所在目录作为当前工作目录执行）：
+如果使用 `Anaconda`，运行：
+
+```shell
+cd img_cap/blip
+conda create --name img_cap_blip python==3.11 --yes
+conda activate img_cap_blip
+pip install -e .
+cd ../../
+python starter.py imgcap
+```
+
+---
+
+测试图像字幕模型的图像语义识别功能是否正常（注意需要从项目所在目录作为当前工作目录执行）：
 
 ```shell
 curl -X POST http://localhost:11003/img-cap/predict \
@@ -380,6 +397,12 @@ curl -X POST http://localhost:11003/img-cap/predict \
     "img_path": "./tests/resources/imgcap-test.png"
 }
 EOF
+```
+
+返回值应该类似：
+
+```json
+{"caption":"there is a cartoon girl with a ponytail and a red dress","id":"a9c09210-63f7-4b2b-9119-50ab116cadf3","lang":"en"}
 ```
 
 ### 视频字幕模型
