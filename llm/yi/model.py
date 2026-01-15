@@ -1,3 +1,7 @@
+"""
+More details about the model:
+    https://huggingface.co/01-ai/Yi-6B-Chat
+"""
 from typing import Any
 
 from common.abs_model import AbstractModel
