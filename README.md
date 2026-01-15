@@ -6,7 +6,7 @@ ZerolanCore 集成了众多开源的、可本地部署的人工智能模型或�
 
 >  相关项目：[ZerolanLiveRobot](https://github.com/AkagawaTsurunaki/ZerolanLiveRobot)、[ZerolanData](https://github.com/AkagawaTsurunaki/zerolan-data)
 
-### 项目核心结构
+## 项目核心结构
 
 本项目的核心模块结构如下，你可以根据需要选择安装不同类型的 AI 模型：
 
@@ -24,17 +24,64 @@ ZerolanCore 集成了众多开源的、可本地部署的人工智能模型或�
        └─ requirements.txt    # 运行该模型需要的 Python 依赖
 ```
 
-### 模型配置文件
+## 模型配置文件
 
-将项目根目录中的配置文件 `config.template.yaml` 更名为 `config.yaml`，然后修改之中的配置项，详细内容请看配置文件中的注释内容。
+将项目根目录中的配置文件 `config.template.yaml` 复制一份并更名为 `config.yaml`，然后修改之中的配置项。
 
-> [!NOTE]
+以 `LLM` 配置项为例。
+
+### 选择模型
+
+如果你想选择 `Qwen/Qwen-7B-Chat` 作为你想要部署的大语言模型，那么需要在 `id` 项填写模型名称 `Qwen/Qwen-7B-Chat`，模型名称在下一节的各个表格的第一列（严格匹配）。
+
+### 设置服务 IP 地址
+
+然后设置 `host` 项，这是模型 Web 服务的主机地址，默认是 `0.0.0.0`，这意味着该模型的服务会监听所有可用的网络接口，允许从任意 IP 地址访问该服务。
+如果将 `host` 设置 `127.0.0.1`，那么仅有本机可以访问这个服务。当然，你也可以指定 IP 地址，例如 `192.168.2.1`。如果你选择公网访问，别忘记合理配置防火墙的放行规则。
+
+> 至于选择哪个，取决于你将
+> [ZerolanLiveRobot](https://github.com/AkagawaTsurunaki/ZerolanLiveRobot) 与 [ZerolanCore](https://github.com/AkagawaTsurunaki/zerolan-core) 
+> 部署在什么样的环境中。
 > 
-> 如果在 `ip` 中设置 `127.0.0.1`，那么仅有本机可以访问这个服务。
+> 例如你将 [ZerolanCore](https://github.com/AkagawaTsurunaki/zerolan-core) 
+> 放到一个你购买的远程服务器上，而 [ZerolanLiveRobot](https://github.com/AkagawaTsurunaki/ZerolanLiveRobot) 放到你的笔记本电脑上（和远程服务器不是一个主机），
+> 此时就必须设置为 `0.0.0.0`；否则，如果 [ZerolanLiveRobot](https://github.com/AkagawaTsurunaki/ZerolanLiveRobot) 和 [ZerolanCore](https://github.com/AkagawaTsurunaki/zerolan-core)
+> 完全在同一台电脑上，设置 `0.0.0.0` 或 `127.0.0.1` 均可，但 `127.0.0.1` 在程序上更安全。
 
-> [!IMPORTANT]
-> 
-> 默认配置下，ZerolanCore 会尝试从 Hugging Face 下载部分模型，由于部分地区连接 Hugging Face 存在困难，您可能需要手动下载模型并设置模型地址。
+接着设置 `port` 项，这是模型 Web 服务的端口号，推荐你使用默认的端口号，但是如果端口号与其他进程冲突则需要更换。
+
+### 配置模型设置
+
+在配置文件中，可以看到这样的结构：
+
+```yaml
+LLM:
+  config:
+    ...
+    Qwen/Qwen-7B-Chat:
+      model_path: "your/path/to/Qwen-7B-Chat" # Directory of the model
+      ...
+```
+
+因为你选择了 `Qwen/Qwen-7B-Chat` 所以只需要修改你启动的那个模型的配置就行了（不启用的模型不用管）。
+
+`model_path` 是模型的地址，严格来说是一个路径。默认配置下，会尝试从 HuggingFace 模型仓库下载模型，由于部分地区连接 HuggingFace 存在困难，你可以选择配置环境变量。
+
+Linux 设置环境变量：
+
+```shell
+export HF_ENDPOINT=https://hf-mirror.com
+```
+
+Windows 设置环境变量：
+
+```shell
+$env:HF_ENDPOINT = "https://hf-mirror.com"
+```
+
+如果使用镜像也无法下载，您可能需要自行探究方法手动下载模型并设置模型地址（目录）。
+
+剩下的选项因模型而异，详细可以看配置文件中的内容，如果你不知道怎么改，就保持默认配置，因为这些配置经过了测试确实可用。
 
 ## 支持集成模型
 
@@ -446,7 +493,7 @@ python starter.py ocr
 
 ---
 
-测试模型的光学字符识别是否正常（注意需要从项目所在目录作为当前工作目录执行）：
+测试光学字符识别模型的文字识别功能是否正常（注意需要从项目所在目录作为当前工作目录执行）：
 
 ```shell
 curl -X POST http://localhost:11004/ocr/predict \
