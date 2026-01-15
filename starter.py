@@ -168,8 +168,9 @@ def vecdb_app(db):
         from database.milvus.config import MilvusDBConfig as Config
         db_config = config["config"]
 
-        database = DB(Config(**db_config))
-        app = App(database=database, host=config["host"], port=config["port"])
+        config = Config(**db_config)
+        database = DB(config)
+        app = App(database=database, host=config.host, port=config.port)
         return app
 
 

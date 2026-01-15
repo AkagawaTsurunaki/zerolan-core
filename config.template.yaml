@@ -86,3 +86,10 @@ VLA:
       showui_model_path: "showlab/ShowUI-2B" # Directory of the model
       showui_model_device: auto # Device to run the model
       qwen_vl_2b_instruct_model_path: "Qwen/Qwen2-VL-2B-Instruct" # Directory of the model
+
+database:
+  milvus:
+    config:
+      host: "0.0.0.0" # Host of the API service you want to start
+      port: 11010 # Port of the API service you want to start
+      db_path: "data/milvus.db" # Path of the Milvus database to save
