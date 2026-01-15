@@ -14,6 +14,16 @@ from llm.qwen.config import QwenModelConfig
 from zerolan.data.pipeline.llm import LLMQuery, LLMPrediction, Conversation
 
 
+def catch_error(callable):
+    try:
+        callable()
+    except AssertionError as e:
+        if 'Only one of "bf16", "fp16", "fp32" can be true' in str(e):
+            logger.error(
+                "Tips: You may be using a quantized model; if so, set the `precise` parameter to `null`.")
+        raise e
+
+
 class Qwen7BChat(AbstractModel):
 
     def __init__(self, config: QwenModelConfig):
@@ -31,17 +41,22 @@ class Qwen7BChat(AbstractModel):
 
     @log_model_loading("Qwen/Qwen-7B-Chat")
     def load_model(self):
-        self._tokenizer = AutoTokenizer.from_pretrained(self._model_path, trust_remote_code=True)
+        self._tokenizer = AutoTokenizer.from_pretrained(
+            self._model_path, trust_remote_code=True)
         if self._precise == "bf16":
-            self._model = AutoModelForCausalLM.from_pretrained(self._model_path,
-                                                               device_map=self._device,
-                                                               trust_remote_code=True,
-                                                               bf16=True)
+            def load_bf16():
+                self._model = AutoModelForCausalLM.from_pretrained(self._model_path,
+                                                                   device_map=self._device,
+                                                                   trust_remote_code=True,
+                                                                   bf16=True)
+            catch_error(load_bf16)
         elif self._precise == "fp16":
-            self._model = AutoModelForCausalLM.from_pretrained(self._model_path,
-                                                               device_map=self._device,
-                                                               trust_remote_code=True,
-                                                               fp16=True)
+            def load_fp16():
+                self._model = AutoModelForCausalLM.from_pretrained(self._model_path,
+                                                                   device_map=self._device,
+                                                                   trust_remote_code=True,
+                                                                   fp16=True)
+            catch_error(load_fp16)
         else:
             self._model = AutoModelForCausalLM.from_pretrained(self._model_path,
                                                                device_map=self._device,
@@ -58,7 +73,8 @@ class Qwen7BChat(AbstractModel):
 
         """
         text, history, sys_prompt = self._to_qwen_format(llm_query)
-        response, history = self._model.chat(self._tokenizer, llm_query.text, history=history)
+        response, history = self._model.chat(
+            self._tokenizer, llm_query.text, history=history)
         logger.debug(response)
         return self._to_pipeline_format(response, history, sys_prompt)
 
@@ -84,28 +100,28 @@ class Qwen7BChat(AbstractModel):
 
     @staticmethod
     def _to_qwen_format(llm_query: LLMQuery) -> (str, list[tuple[str, str]], str):
-        history_content_list: list[str] = [c.content for c in llm_query.history]
+        history_content_list = [c.content for c in llm_query.history]
 
         sys_prompt = None
         history = []
-        # Concat system prompt to common user input.
-        if len(llm_query.history) > 0:
-            if llm_query.history[0].role == "system":
-                sys_prompt = llm_query.history[0].content
-                if len(history_content_list) > 0:
-                    history_content_list = history_content_list[1:]
-                    history_content_list[0] = sys_prompt + history_content_list[0]
 
-            assert len(history_content_list) % 2 == 0, f'The length of items of the history must be even number.'
+        if llm_query.history and llm_query.history[0].role == "system":
+            sys_prompt = llm_query.history[0].content
+            history_content_list = history_content_list[1:]
 
-            # Convert to tuple.
-            history: list[tuple] = []
+            if history_content_list:
+                history_content_list[0] = sys_prompt + history_content_list[0]
 
-            for i in range(0, len(history_content_list), 2):
-                history.append((history_content_list[i], history_content_list[i + 1]))
+        if len(history_content_list) % 2 != 0:
+            raise ValueError(
+                "The number of history messages must be even (user and assistant turns must come in pairs).")
 
-        text = llm_query.text
-        return text, history, sys_prompt
+        history = [
+            (history_content_list[i], history_content_list[i + 1])
+            for i in range(0, len(history_content_list), 2)
+        ]
+
+        return llm_query.text, history, sys_prompt
 
     @staticmethod
     def _to_pipeline_format(response: str, history: list[tuple[str, str]], sys_prompt: str) -> LLMPrediction:
@@ -120,7 +136,8 @@ class Qwen7BChat(AbstractModel):
         # Get system prompt.
         if sys_prompt:
             ret_history[0].content = ret_history[0].content[len(sys_prompt):]
-            ret_history.insert(0, Conversation(role="system", content=sys_prompt))
+            ret_history.insert(0, Conversation(
+                role="system", content=sys_prompt))
 
         llm_response = LLMPrediction(response=response, history=ret_history)
 

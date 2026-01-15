@@ -34,7 +34,8 @@ class OCRApplication(AbstractApplication):
                 img_path = web_util.save_request_image(request, prefix="ocr")
                 query = OCRQuery(img_path=img_path)
             else:
-                raise NotImplementedError("Unsupported Content-Type.")
+                raise NotImplementedError(
+                    f"Unsupported Content-Type: {request.headers['Content-Type']}")
 
             logger.info(f'Location of the image: {query.img_path}')
             return query
@@ -43,7 +44,8 @@ class OCRApplication(AbstractApplication):
         @self._app.route("/ocr/predict", methods=["POST"])
         def _handle_predict():
             query = self._to_pipeline_format()
-            assert os.path.exists(query.img_path), f"The image file does not exist: {query.img_path}"
+            assert os.path.exists(
+                query.img_path), f"The image file does not exist: {query.img_path}"
             prediction: OCRPrediction = self.model.predict(query)
             logger.info(f"Model response: {prediction}")
             return Response(

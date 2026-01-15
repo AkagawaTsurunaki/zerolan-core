@@ -42,6 +42,7 @@ class ASRApplication(AbstractApplication):
                 query.audio_path = audio_path
 
             prediction: ASRPrediction = self.model.predict(query)
+            logger.info(f"Response: {prediction.transcript}")
             return Response(
                 response=prediction.model_dump_json(),
                 status=200,

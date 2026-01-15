@@ -107,7 +107,8 @@ $env:HF_ENDPOINT = "https://hf-mirror.com"
 | [01-ai/Yi-6B-Chat](https://www.modelscope.cn/models/01ai/Yi-6B-Chat) | 中英   | ❌️        | 23.7 GiB                                            |
 | [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1)    | 日英   | ❌️        | 16.0 GiB                                            |
 | [DeepSeek-R1-Distill-Llama-8B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B) | 中英   |❌️| 47.2 GiB                                            |
-| [DeepSeek-R1-Distill-Qwen-14B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B) | 中英   |❌️| 48.0 GiB 以上                                           |  
+| [DeepSeek-R1-Distill-Qwen-14B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B) | 中英   |❌️| 48.0 GiB 以上                                           |
+| [Ollama](https://github.com/ollama/ollama)                   | 多语     | ✅️        | 取决于本地模型 |
 
 > [!NOTE]
 >
@@ -117,6 +118,7 @@ $env:HF_ENDPOINT = "https://hf-mirror.com"
 > 4. [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) 在测试时可能发生无法读取上下文的问题。
 > 5. [DeepSeek-R1-Distill-Llama-8B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B) 支持双卡推理，但是存在语句异常中断问题，原因不详。
 > 6. [DeepSeek-R1-Distill-Qwen-14B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B) 支持双卡推理，但是其显存已经超出两张 NVIDIA GeForce RTX 4090 的极限。
+> 7. 4. [Ollama](https://github.com/ollama/ollama) 确保本机已安装并启动 **Ollama 服务**。
 
 ---
 使用以下命令创建 [THUDM/GLM-4](https://github.com/THUDM/GLM-4) 的环境并启动模型。

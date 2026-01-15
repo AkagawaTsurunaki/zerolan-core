@@ -48,6 +48,12 @@ LLM:
       model_path: "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B" # Directory of the model
       max_length: 23000
       tensor_parallel_size: 2
+    ollama:
+      api_url: "http://localhost:11434"  # Ollama API URL
+      model_name: "gemma3:1b"  # Ollama model name (e.g., llama2, mistral, qwen, deepseek-r1, etc.)
+      temperature: 0.7
+      top_p: 0.95
+      timeout: 60
 
 ImgCap:
   id: "Salesforce/blip-image-captioning-large" # The model you want to use

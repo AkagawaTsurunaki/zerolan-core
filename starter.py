@@ -79,6 +79,10 @@ def llm_app() -> AbstractApplication:
             from llm.deepseek.model import DeepSeekLLMModel as Model
             from llm.deepseek.config import DeepSeekModelConfig as Config
             return Model(Config(**model_cfg))
+        elif llm_id == "ollama":
+            from llm.ollama.model import OllamaModel as Model
+            from llm.ollama.config import OllamaModelConfig as Config
+            return Model(Config(**model_cfg))
         else:
             raise NameError(f"No such model name (id) {llm_id}")
 
