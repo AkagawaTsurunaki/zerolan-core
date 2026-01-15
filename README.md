@@ -118,7 +118,33 @@ $env:HF_ENDPOINT = "https://hf-mirror.com"
 > 4. [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) 在测试时可能发生无法读取上下文的问题。
 > 5. [DeepSeek-R1-Distill-Llama-8B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B) 支持双卡推理，但是存在语句异常中断问题，原因不详。
 > 6. [DeepSeek-R1-Distill-Qwen-14B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B) 支持双卡推理，但是其显存已经超出两张 NVIDIA GeForce RTX 4090 的极限。
-> 7. 4. [Ollama](https://github.com/ollama/ollama) 确保本机已安装并启动 **Ollama 服务**。
+> 7. [Ollama](https://github.com/ollama/ollama) 确保本机已安装并启动 **Ollama 服务**。
+
+---
+
+如果使用 Ollama 服务，请执行。
+
+如果使用 `uv`，运行：
+
+```shell
+cd llm/ollama
+uv sync
+source .venv/bin/activate
+cd ../../
+uv run starter.py llm
+```
+
+假如你想要使用 `llama3.2:3b` 这个模型，那么执行（可能会受网络原因影响）：
+
+```shell
+ollama run llama3.2:3b
+```
+
+查询已经 pull 的模型：
+
+```shell
+ollama list
+```
 
 ---
 使用以下命令创建 [THUDM/GLM-4](https://github.com/THUDM/GLM-4) 的环境并启动模型。
@@ -270,7 +296,7 @@ python starter.py llm
 
 ---
 
-测试大语言模型的文字回复功能是否正常：
+测试大语言模型的文字回复功能（非流式推理）是否正常：
 
 ```shell
 curl -X POST http://localhost:11002/llm/predict \
@@ -292,6 +318,25 @@ EOF
 ```json
 {"id":"f57f9f9c-7109-4459-8bf3-48f7e5e4597c","response":"\nYour name is AkagawaTsurunaki. It's quite unique!","history":[{"role":"system","content":"You are a helpful assistant!","metadata":null},{"role":"user","content":"My name is AkagawaTsurunaki.","metadata":null},{"role":"assistant","content":"Hello, AkagawaTsurunaki.","metadata":null},{"role":"assistant","content":"\nYour name is AkagawaTsurunaki. It's quite unique!","metadata":null}]}
 ```
+
+测试大语言模型的文字回复功能（流式推理）是否正常：
+
+```shell
+curl -X POST http://localhost:11002/llm/stream-predict \
+-H "Content-Type: application/json; charset=utf-8" \
+-d @- <<EOF
+{
+    "text": "What is my name?",
+    "history": [
+        {"content": "You are a helpful assistant!", "metadata":null, "role":"system"},
+        {"content": "My name is AkagawaTsurunaki.", "metadata":null, "role":"user"},
+        {"content": "Hello, AkagawaTsurunaki.", "metadata":null, "role":"assistant"}
+    ]
+}
+EOF
+```
+
+返回值类似上面的，但应该是一点一点出现的。
 
 ### 自动语音识别模型
 
