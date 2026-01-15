@@ -1,8 +1,7 @@
 [project]
 name = "paddle"
 version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
+description = "https://gitee.com/paddlepaddle/PaddleOCR"
 requires-python = ">=3.11"
 dependencies = [
     "flask>=3.1.2",
@@ -27,3 +26,6 @@ explicit = true
 [tool.uv.sources]
 paddlepaddle-gpu = { index = "paddlepaddle" }
 zerolan-data = { git = "https://github.com/AkagawaTsurunaki/zerolan-data.git", rev = "1.5.0" }
+
+[tool.setuptools]
+packages = []
