@@ -1,6 +1,9 @@
 """
 Ollama API integration for ZerolanCore
 Documentation: https://github.com/ollama/ollama/blob/main/docs/api.md
+
+Thanks to [SLLYING](https://github.com/sllying)'s contribution
+Reviewed and tested by [AkagawaTsurunaki](https://github.com/AkagawaTsurunaki)
 """
 import json
 import requests
