@@ -12,6 +12,8 @@ from common.abs_model import AbstractModel
 from common.decorator import log_model_loading
 from zerolan.data.pipeline.vid_cap import VidCapQuery, VidCapPrediction
 
+from vid_cap.hitea.config import HiteaBaseModelConfig
+
 
 # Some issues:
 #   1. You need pip with verison 24.0 to install fairseq
@@ -22,7 +24,7 @@ from zerolan.data.pipeline.vid_cap import VidCapQuery, VidCapPrediction
 #       Please install fairscale
 
 class HiteaBaseModel(AbstractModel):
-    def __init__(self, config):
+    def __init__(self, config: HiteaBaseModelConfig):
         super().__init__()
         self._model = None
         self._lang = "en"

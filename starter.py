@@ -174,6 +174,21 @@ def vecdb_app(db):
         return app
 
 
+def vidcap_app():
+    config = _config["VidCap"]
+    host, port = config["host"], config["port"]
+    model_id = config["id"]
+
+    from vid_cap.app import VidCapApplication
+    from vid_cap.hitea.model import HiteaBaseModel
+    from vid_cap.hitea.config import HiteaBaseModelConfig
+
+    config = HiteaBaseModelConfig(**config['config'][model_id])
+    model = HiteaBaseModel(config)
+    app = VidCapApplication(model=model, host=host, port=port)
+    return app
+
+
 def get_app(service):
     if "asr" == service:
         return asr_app()
@@ -189,6 +204,8 @@ def get_app(service):
         return vla_app(args.model)
     elif "vecdb" == service:
         return vecdb_app(args.db)
+    elif "vidcap" == service:
+        return vidcap_app()
     else:
         raise NotImplementedError("Unsupported service.")
 

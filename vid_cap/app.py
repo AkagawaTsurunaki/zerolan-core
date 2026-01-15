@@ -12,7 +12,7 @@ from utils import file_util
 class VidCapApplication(AbstractApplication):
 
     def __init__(self, model: AbstractModel, host: str, port: int):
-        super().__init__("video-captioning")
+        super().__init__(model, "video-captioning")
         self._app = Flask(__name__)
         self._app.add_url_rule(rule='/vid-cap/predict', view_func=self._handle_predict,
                                methods=["GET", "POST"])
@@ -28,7 +28,7 @@ class VidCapApplication(AbstractApplication):
         with self._app.app_context():
             logger.info('Request received: processing...')
 
-            if request.headers['Content-Type'] == 'application/json':
+            if 'application/json' in request.headers['Content-Type']:
                 # If it's in JSON format, then there must be a video location
                 json_val = request.get_json()
                 query = VidCapQuery.model_validate(json_val)
