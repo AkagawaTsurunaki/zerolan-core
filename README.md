@@ -419,7 +419,11 @@ EOF
 |--------------------------------------------------------------------|--------|---------|
 | [paddlepaddle/PaddleOCR](https://gitee.com/paddlepaddle/PaddleOCR) | 中英法德韩日 | 0.5 GiB |
 
-使用此命令创建 [paddlepaddle/PaddleOCR](https://gitee.com/paddlepaddle/PaddleOCR) 的环境并启动模型：
+---
+
+使用以下命令创建 [paddlepaddle/PaddleOCR](https://gitee.com/paddlepaddle/PaddleOCR) 的环境并启动模型。
+
+如果使用 `uv`，运行：
 
 ```shell
 cd ocr/paddle
@@ -428,6 +432,19 @@ source .venv/bin/activate
 cd ../../
 uv run starter.py ocr
 ```
+
+如果使用 `Anaconda`，运行：
+
+```shell
+cd ocr/paddle
+conda create --name ocr_paddle python==3.11 --yes
+conda activate ocr_paddle
+pip install -e .
+cd ../../
+python starter.py ocr
+```
+
+---
 
 测试模型的光学字符识别是否正常（注意需要从项目所在目录作为当前工作目录执行）：
 
@@ -439,6 +456,12 @@ curl -X POST http://localhost:11004/ocr/predict \
     "img_path": "./tests/resources/ocr-test.png"
 }
 EOF
+```
+
+返回值应该类似：
+
+```json
+{"id":"83316895-f0d9-4d84-adfa-1acf5d02354f","region_results":[{"position":{"lu":{"x":8.0,"y":25.0},"ru":{"x":434.0,"y":25.0},"rd":{"x":434.0,"y":87.0},"ld":{"x":8.0,"y":87.0}},"content":"我是赤川鹤鸣","confidence":0.9613597989082336}]}
 ```
 
 ### 视觉语言模型代理
