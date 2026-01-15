@@ -483,10 +483,10 @@ cd ../../
 python starter.py vidcap
 ```
 
-测试视频字幕模型的图像语义识别功能是否正常（注意需要从项目所在目录作为当前工作目录执行）：
+测试视频字幕模型的视频语义识别功能是否正常（注意需要从项目所在目录作为当前工作目录执行）：
 
 ```shell
-curl -X POST http://localhost:11004/vid-cap/predict \
+curl -X POST http://localhost:11011/vid-cap/predict \
 -H "Content-Type: application/json; charset=utf-8" \
 -d @- <<EOF
 {
