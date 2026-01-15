@@ -562,7 +562,7 @@ EOF
 
 | 模型名称                             | 支持语言   | 显存占用    |
 |----------------------------------------------------|--------|---------|
-| [showlab/ShowUI](https://github.com/showlab/ShowUI) | 中英 | 10.9 GiB |
+| [showlab/ShowUI](https://github.com/showlab/ShowUI) | 中英 | 5.26 GiB |
 
 1. [showlab/ShowUI](https://github.com/showlab/ShowUI) 可以在用户指令和给定图片中模拟人类操作 UI 界面给予动作反馈。例如你可以使用“点击搜索按钮”。
 
