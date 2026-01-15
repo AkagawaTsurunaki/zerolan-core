@@ -1,6 +1,6 @@
 # ZerolanCore
 
-![Static Badge](https://img.shields.io/badge/Python-3.10-blue) ![Static Badge](https://img.shields.io/badge/LLM-purple) ![Static Badge](https://img.shields.io/badge/ASR-purple) ![Static Badge](https://img.shields.io/badge/TTS-purple) ![Static Badge](https://img.shields.io/badge/OCR-purple) ![Static Badge](https://img.shields.io/badge/Image%20Captioning-purple) ![Static Badge](https://img.shields.io/badge/Video%20Captioning-purple) ![Static Badge](https://img.shields.io/badge/License-MIT-orange) ![Static Badge](https://img.shields.io/badge/ver-1.2-green) 
+![Static Badge](https://img.shields.io/badge/Python-3.10-blue) ![Static Badge](https://img.shields.io/badge/LLM-purple) ![Static Badge](https://img.shields.io/badge/ASR-purple) ![Static Badge](https://img.shields.io/badge/TTS-purple) ![Static Badge](https://img.shields.io/badge/OCR-purple) ![Static Badge](https://img.shields.io/badge/Image%20Captioning-purple) ![Static Badge](https://img.shields.io/badge/Video%20Captioning-purple) ![Static Badge](https://img.shields.io/badge/License-MIT-orange) ![Static Badge](https://img.shields.io/badge/ver-1.3-green) 
 
 ZerolanCore 集成了众多开源的、可本地部署的人工智能模型或服务，旨在使用统一的管线设计封装大语言模型（LLM）、自动语音识别（ASR）、文本转语音（TTS）、图像字幕（Image Captioning）、光学字符识别（OCR）、视频字幕（Video Captioning）等一系列的人工智能模型，并可以使用统一的配置文件和服务启动器快速部署和启动 AI 服务。
 
