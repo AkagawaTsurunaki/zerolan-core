@@ -24,36 +24,6 @@ ZerolanCore 集成了众多开源的、可本地部署的人工智能模型或�
        └─ requirements.txt    # 运行该模型需要的 Python 依赖
 ```
 
-### 运行环境构建
-
-你可以选择使用 Anaconda 或 uv 构建运行环境，或者直接使用 `pyenv` 建立虚拟环境，并使用 `pip` 进行安装。
-
->  [!IMPORTANT]
->
-> 由于不同的模型所需要的环境各不相同，强烈建议为每个模型使用相互隔离的 Python 环境，以免出现依赖冲突等问题。
-
-一旦本项目中的某些模型的依赖配置清单被作者严格筛查，你就可以在本文档的后续中看到运行它的命令，它几乎可以很大程度上保证你的模型不会报错，因此强烈建议使用 uv。但是，某些模型的配置清单还没有来得及严格审查，所以有些模型还需要用 Anaconda 创建环境。
-
-如果你选择使用 Anaconda，以 `speech_paraformer_asr` 模型为例，运行以下命令：
-
-```shell
-conda create --name speech_paraformer_asr python=3.10
-```
-
-这将创建一个名为 `speech_paraformer_asr` 的 conda 环境，指定 Python 版本为 3.10。
-
-然后激活这个环境，使用：
-
-```
-conda activate speech_paraformer_asr
-pip install -r requirements.txt
-pip install -r ./asr/paraformer/requirements.txt
-```
-
-这将会自动下载并安装所有依赖。
-
-其他模型的运行环境构建类似，此不赘述。
-
 ### 模型配置文件
 
 将项目根目录中的配置文件 `config.template.yaml` 更名为 `config.yaml`，然后修改之中的配置项，详细内容请看配置文件中的注释内容。
@@ -65,20 +35,6 @@ pip install -r ./asr/paraformer/requirements.txt
 > [!IMPORTANT]
 > 
 > 默认配置下，ZerolanCore 会尝试从 Hugging Face 下载部分模型，由于部分地区连接 Hugging Face 存在困难，您可能需要手动下载模型并设置模型地址。
-
-### 启动模型服务
-
-如果一切顺利，你将使用这条命令启动自动语音识别（ASR）服务：
-
-```
-python starter.py asr
-```
-
-你也可以使用参数 `llm`、`imgcap`、`ocr`、`tts`、`vla`、`vecdb` 等，详见 `starter.py`。
-
-如果你的终端上没有报错，且看到了模型的加载进度条，且有类似网络 IP 的字样，则可视为启动成功。
-
-其他服务的启动类似，此不赘述。
 
 ## 支持集成模型
 
@@ -96,15 +52,15 @@ python starter.py asr
 
 根据自然语言上下文进行推理，遵循用户指令，并给予文字响应。
 
-| 模型名称                                                                 | 支持语言 | 流式推理 | 显存占用                                            |
-|----------------------------------------------------------------------|------| -------- |-------------------------------------------------|
-| [THUDM/GLM-4](https://github.com/THUDM/GLM-4)                        | 中英   |     ❌️     | 18.4 GiB                                        |
+| 模型名称                                                                 | 支持语言 | 流式推理 | 显存占用                                                |
+|----------------------------------------------------------------------|------| -------- |-----------------------------------------------------|
+| [THUDM/GLM-4](https://github.com/THUDM/GLM-4)                        | 中英   |     ❌️     | 18.4 GiB                                            |
 | [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3)               | 中英   | ✅️        | 无量化 12.4 GiB \| 8-Bit 量化 7.5  GiB \| 4-Bit 量化 4.6 GiB |
-| [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat)        | 中英   | ✅️        | 15.3 GiB                                        |
-| [01-ai/Yi-6B-Chat](https://www.modelscope.cn/models/01ai/Yi-6B-Chat) | 中英   | ❌️        | 23.7 GiB                                        |
-| [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1)    | 日英   | ❌️        | 16.0 GiB                                        |
-| [DeepSeek-R1-Distill-Llama-8B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B) | 中英   |❌️| 47.2 GiB                                        |
-| [DeepSeek-R1-Distill-Qwen-14B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B) | 中英   |❌️| 48.0+ GiB                                       | 
+| [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat)        | 中英   | ✅️        | 15.3 GiB                                            |
+| [01-ai/Yi-6B-Chat](https://www.modelscope.cn/models/01ai/Yi-6B-Chat) | 中英   | ❌️        | 23.7 GiB                                            |
+| [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1)    | 日英   | ❌️        | 16.0 GiB                                            |
+| [DeepSeek-R1-Distill-Llama-8B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B) | 中英   |❌️| 47.2 GiB                                            |
+| [DeepSeek-R1-Distill-Qwen-14B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B) | 中英   |❌️| 48.0 GiB 以上                                           |  
 
 > [!NOTE]
 >
@@ -115,7 +71,10 @@ python starter.py asr
 > 5. [DeepSeek-R1-Distill-Llama-8B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B) 支持双卡推理，但是存在语句异常中断问题，原因不详。
 > 6. [DeepSeek-R1-Distill-Qwen-14B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B) 支持双卡推理，但是其显存已经超出两张 NVIDIA GeForce RTX 4090 的极限。
 
-使用此命令创建 [THUDM/GLM-4](https://github.com/THUDM/GLM-4) 的环境并启动模型：
+---
+使用以下命令创建 [THUDM/GLM-4](https://github.com/THUDM/GLM-4) 的环境并启动模型。
+
+如果使用 `uv`，运行：
 
 ```shell
 cd llm/glm4
@@ -125,7 +84,21 @@ cd ../../
 uv run starter.py llm
 ```
 
-使用此命令创建 [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3) 的环境并启动模型：
+如果使用 `Anaconda`，运行：
+
+```shell
+cd llm/glm4
+conda create --name llm_glm4 python==3.11 --yes
+conda activate llm_glm4
+pip install -e .
+cd ../../
+python starter.py llm
+```
+---
+
+使用以下命令创建 [THUDM/chatglm3-6b](https://github.com/THUDM/ChatGLM3) 的环境并启动模型。
+
+如果使用 `uv`，运行：
 
 ```shell
 cd llm/chatglm3
@@ -135,7 +108,22 @@ cd ../../
 uv run starter.py llm
 ```
 
-使用此命令创建 [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) 的环境并启动模型：
+如果使用 `Anaconda`，运行：
+
+```shell
+cd llm/chatglm3
+conda create --name llm_chatglm3 python==3.10 --yes
+conda activate llm_chatglm3
+pip install -e .
+cd ../../
+python starter.py llm
+```
+
+---
+
+使用以下命令创建 [Qwen/Qwen-7B-Chat](https://huggingface.co/Qwen/Qwen-7B-Chat) 的环境并启动模型。
+
+如果使用 `uv`，运行：
 
 ```shell
 cd llm/qwen
@@ -145,7 +133,22 @@ cd ../../
 uv run starter.py llm
 ```
 
-使用此命令创建 [01-ai/Yi-6B-Chat](https://www.modelscope.cn/models/01ai/Yi-6B-Chat) 的环境并启动模型：
+如果使用 `Anaconda`，运行：
+
+```shell
+cd llm/qwen
+conda create --name llm_qwen python==3.11 --yes
+conda activate llm_qwen
+pip install -e .
+cd ../../
+python starter.py llm
+```
+
+---
+
+使用以下命令创建 [01-ai/Yi-6B-Chat](https://www.modelscope.cn/models/01ai/Yi-6B-Chat) 的环境并启动模型。
+
+如果使用 `uv`，运行：
 
 ```shell
 cd llm/yi
@@ -155,7 +158,22 @@ cd ../../
 uv run starter.py llm
 ```
 
-使用此命令创建 [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) 的环境并启动模型：
+如果使用 `Anaconda`，运行：
+
+```shell
+cd llm/yi
+conda create --name llm_yi python==3.11 --yes
+conda activate llm_yi
+pip install -e .
+cd ../../
+python starter.py llm
+```
+
+---
+
+使用以下命令创建 [augmxnt/shisa-7b-v1](https://huggingface.co/augmxnt/shisa-7b-v1) 的环境并启动模型。
+
+如果使用 `uv`，运行：
 
 ```shell
 cd llm/shisa
@@ -165,8 +183,22 @@ cd ../../
 uv run starter.py llm
 ```
 
+如果使用 `Anaconda`，运行：
 
-使用此命令创建 [DeepSeek-R1-Distill-Llama-8B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B)、[DeepSeek-R1-Distill-Qwen-14B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B) 的环境并启动模型：
+```shell
+cd llm/shisa
+conda create --name llm_shisa python==3.11 --yes
+conda activate llm_shisa
+pip install -e .
+cd ../../
+python starter.py llm
+```
+
+---
+
+使用此命令创建 [DeepSeek-R1-Distill-Llama-8B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B)、[DeepSeek-R1-Distill-Qwen-14B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B) 的环境并启动模型。
+
+如果使用 `uv`，运行：
 
 ```shell
 cd llm/deepseek
@@ -176,7 +208,20 @@ cd ../../
 uv run starter.py llm
 ```
 
-测试模型的文字回复是否正常：
+如果使用 `Anaconda`，运行：
+
+```shell
+cd llm/deepseek
+conda create --name llm_deepseek python==3.11 --yes
+conda activate llm_deepseek
+pip install -e .
+cd ../../
+python starter.py llm
+```
+
+---
+
+测试大语言模型的文字回复功能是否正常：
 
 ```shell
 curl -X POST http://localhost:11002/llm/predict \
@@ -191,6 +236,12 @@ curl -X POST http://localhost:11002/llm/predict \
     ]
 }
 EOF
+```
+
+返回值应该类似：
+
+```json
+{"id":"f57f9f9c-7109-4459-8bf3-48f7e5e4597c","response":"\nYour name is AkagawaTsurunaki. It's quite unique!","history":[{"role":"system","content":"You are a helpful assistant!","metadata":null},{"role":"user","content":"My name is AkagawaTsurunaki.","metadata":null},{"role":"assistant","content":"Hello, AkagawaTsurunaki.","metadata":null},{"role":"assistant","content":"\nYour name is AkagawaTsurunaki. It's quite unique!","metadata":null}]}
 ```
 
 ### 自动语音识别模型
