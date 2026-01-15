@@ -251,13 +251,17 @@ EOF
 | 模型名称                                                                                                                                                                        | 支持语言 | 显存占用    |
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
 | [iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1](https://www.modelscope.cn/models/iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1) | 中英  | 0.5 GiB |
-| [kotoba-tech/kotoba-whisper-v2.0](https://huggingface.co/kotoba-tech/kotoba-whisper-v2.0) | 日   | 0.5 GiB |
+| [kotoba-tech/kotoba-whisper-v2.0](https://huggingface.co/kotoba-tech/kotoba-whisper-v2.0) | 日   | 2.2 GiB |
 
 > [!NOTE]
 >
 > 1. [iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1](https://www.modelscope.cn/models/iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1) 在本项目没有使用**符号分割**和**音频激活**子模型，如有需要请[查看此处](https://www.modelscope.cn/models/iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1)。
 
+---
+
 使用此命令创建 [iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1](https://www.modelscope.cn/models/iic/speech_paraformer_asr_nat-zh-cn-16k-common-vocab8358-tensorflow1) 的环境并启动模型：
+
+如果使用 `uv`，运行：
 
 ```shell
 cd asr/paraformer
@@ -267,12 +271,56 @@ cd ../../
 uv run starter.py asr
 ```
 
+如果使用 `Anaconda`，运行：
+
+```shell
+cd asr/paraformer
+conda create --name asr_paraformer python==3.11 --yes
+conda activate asr_paraformer
+pip install -e .
+cd ../../
+python starter.py asr
+```
+
+---
+
+使用此命令创建 [kotoba-tech/kotoba-whisper-v2.0](https://huggingface.co/kotoba-tech/kotoba-whisper-v2.0) 的环境并启动模型：
+
+如果使用 `uv`，运行：
+
+```shell
+cd asr/kotoba_whisper_2
+uv sync
+source .venv/bin/activate
+cd ../../
+uv run starter.py asr
+```
+
+如果使用 `Anaconda`，运行：
+
+```shell
+cd asr/kotoba_whisper_2
+conda create --name asr_kotoba_whisper_2 python==3.11 --yes
+conda activate asr_kotoba_whisper_2
+pip install -e .
+cd ../../
+python starter.py asr
+```
+
+---
+
 测试模型的语音识别是否正常（注意需要从项目所在目录作为当前工作目录执行）：
 
 ```shell
 curl -X POST http://localhost:11001/asr/predict \
   -F "audio=@tests/resources/tts-test.wav;type=audio/wav" \
   -F "json={\"audio_path\": \"\", \"channels\": 2};type=application/json"
+```
+
+返回值应该类似：
+
+```json
+{"id":"b5a1dbaf-6e32-4750-90b4-0dce0294a4fe","transcript":"我是赤川鹤鸣"}
 ```
 
 ### 文本转语音模型
