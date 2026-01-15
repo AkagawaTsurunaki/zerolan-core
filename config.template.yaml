@@ -93,3 +93,11 @@ database:
       host: "0.0.0.0" # Host of the API service you want to start
       port: 11010 # Port of the API service you want to start
       db_path: "data/milvus.db" # Path of the Milvus database to save
+
+VidCap:
+  id: "iic/multi-modal_hitea_video-captioning_base_en" # The model you want to use
+  host: "0.0.0.0" # Host of the API service you want to start
+  port: 11011 # Port of the API service you want to start
+  config:
+    iic/multi-modal_hitea_video-captioning_base_en:
+      model_path: "iic/multi-modal_hitea_video-captioning_base_en" # Directory of the model
