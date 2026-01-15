@@ -521,6 +521,44 @@ EOF
 
 1. [showlab/ShowUI](https://github.com/showlab/ShowUI) 可以在用户指令和给定图片中模拟人类操作 UI 界面给予动作反馈。例如你可以使用“点击搜索按钮”。
 
+### 向量数据库
+
+存储文本等需要被编码存储和提取的内容，用于存储一些长时记忆。注意这与关系型数据库不同。
+
+目前仅支持 [Milvus](https://milvus.io/docs)，运行以下代码创建环境：
+
+```shell
+cd database/milvus
+uv sync
+source .venv/bin/activate
+cd ../../
+uv run starter.py vecdb
+
+```
+
+测试是否能够正常连接数据库：
+
+```shell
+curl -X POST http://localhost:11010/milvus/search \
+-H "Content-Type: application/json; charset=utf-8" \
+-d @- <<EOF
+{
+    "collection_name": "memory",
+    "limit": 1,
+    "output_fields": ["name"],
+    "query": "What is your name?"
+}
+EOF
+```
+
+注意，这里由于数据库是新建的没有任何 Collection，所以应该返回报错信息：
+
+```
+pymilvus.exceptions.MilvusException: <MilvusException: (code=100, message=Can not find memory's schema: collection not found)>
+```
+
+这代表连接成功。
+
 ## License
 
 Feel free to enjoy open-source!
