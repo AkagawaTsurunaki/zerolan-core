@@ -25,6 +25,11 @@ LLM:
       model_path: "THUDM/glm-4-9b-chat-hf"
       device: "cuda"
       max_length: 5000
+    legraphista/glm-4-9b-chat-GGUF:
+      model_path: "legraphista/glm-4-9b-chat-GGUF"  # Directory of the .gguf model including the local model file name, otherwise download the model
+      max_length: 5000
+      n_gpu_layers: -1  # -1 means all layers loaded into GPU, while 0 means loaded into CPU only
+      filename: "glm-4-9b-chat.Q2_K.gguf" # Download specific quantited model if it doesn't exist, exact filename please refer to https://huggingface.co/legraphista/glm-4-9b-chat-GGUF
     THUDM/chatglm3-6b:
       model_path: "THUDM/chatglm3-6b" # Directory of the model
       quantize: null  # null | 4 | 8
@@ -107,3 +112,13 @@ VidCap:
   config:
     iic/multi-modal_hitea_video-captioning_base_en:
       model_path: "iic/multi-modal_hitea_video-captioning_base_en" # Directory of the model
+
+Defense:
+  id: "protectai/deberta-v3-base-prompt-injection-v2"
+  host: "0.0.0.0"
+  port: 11012
+  config:
+    protectai/deberta-v3-base-prompt-injection-v2:
+      model_path: "protectai/deberta-v3-base-prompt-injection-v2"
+      max_length: 256
+      device: "cuda"
