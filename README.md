@@ -120,7 +120,7 @@ $env:HF_ENDPOINT = "https://hf-mirror.com"
 > 5. [DeepSeek-R1-Distill-Llama-8B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B) 支持双卡推理，但是存在语句异常中断问题，原因不详。
 > 6. [DeepSeek-R1-Distill-Qwen-14B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B) 支持双卡推理，但是其显存已经超出两张 NVIDIA GeForce RTX 4090 的极限。
 > 7. [Ollama](https://github.com/ollama/ollama) 确保本机已安装并启动 **Ollama 服务**。
-> 8. [legraphista/glm-4-9b-chat-GGUF](https://huggingface.co/legraphista/glm-4-9b-chat-GGUF) 是基于 [THUDM/GLM-4](https://github.com/THUDM/GLM-4) 的量化模型版本，因此除了本项目启动时需要设置模型 id 以外，其他项目例如 [ZerolanLiveRobot](https://github.com/AkagawaTsurunaki/ZerolanLiveRobot) 完全继承了 [THUDM/GLM-4](https://github.com/THUDM/GLM-4) 的接口。
+> 8. [legraphista/glm-4-9b-chat-GGUF](https://huggingface.co/legraphista/glm-4-9b-chat-GGUF) 是基于 [THUDM/GLM-4](https://github.com/THUDM/GLM-4) 的量化模型版本，因此其他项目例如 [ZerolanLiveRobot](https://github.com/AkagawaTsurunaki/ZerolanLiveRobot) 的接口可以直接使用 [THUDM/GLM-4](https://github.com/THUDM/GLM-4) 的形式，只在本项目启动需要的量化模型即可。
 
 ---
 
