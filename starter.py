@@ -75,6 +75,10 @@ def llm_app() -> AbstractApplication:
             from llm.glm4.model import GLM4_9B_Chat_Hf as Model
             from llm.glm4.config import GLM4ModelConfig as Config
             return Model(Config(**model_cfg))
+        elif llm_id == "legraphista/glm-4-9b-chat-GGUF":
+            from llm.glm4.quantited_model import GLM4_9b_chat_GGUF as Model
+            from llm.glm4.config import GLM4QuantitedModelConfig as Config
+            return Model(Config(**model_cfg))
         elif llm_id in ["deepseek-ai/DeepSeek-R1-Distill-Llama-8B", "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B"]:
             from llm.deepseek.model import DeepSeekLLMModel as Model
             from llm.deepseek.config import DeepSeekModelConfig as Config
@@ -193,6 +197,26 @@ def vidcap_app():
     return app
 
 
+def defense_app():
+    from defense.app import DenfenseLLMApplication
+
+    defense_config = _config["Defense"]
+    host, port = defense_config["host"], defense_config["port"]
+    model_id = defense_config["id"]
+    model_cfg = defense_config["config"][model_id]
+
+    def get_model():
+        if model_id == "protectai/deberta-v3-base-prompt-injection-v2":
+            from defense.deberta.model import DebertaPromptDefenseModel as Model
+            from defense.deberta.config import DebertaPromptDefenseModelConfig as Config
+            return Model(Config(**model_cfg))
+        
+    defense = get_model()
+    app = DenfenseLLMApplication(
+        model=defense, host=host, port=port)
+    return app
+
+
 def get_app(service):
     if "asr" == service:
         return asr_app()
@@ -210,6 +234,8 @@ def get_app(service):
         return vecdb_app(args.db)
     elif "vidcap" == service:
         return vidcap_app()
+    elif "defense" == service:
+        return defense_app()
     else:
         raise NotImplementedError("Unsupported service.")
 

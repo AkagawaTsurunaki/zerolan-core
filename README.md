@@ -109,6 +109,7 @@ $env:HF_ENDPOINT = "https://hf-mirror.com"
 | [DeepSeek-R1-Distill-Llama-8B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B) | 中英   |❌️| 47.2 GiB                                            |
 | [DeepSeek-R1-Distill-Qwen-14B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B) | 中英   |❌️| 48.0 GiB 以上                                           |
 | [Ollama](https://github.com/ollama/ollama)                   | 多语     | ✅️        | 取决于本地模型 |
+| [legraphista/glm-4-9b-chat-GGUF](https://huggingface.co/legraphista/glm-4-9b-chat-GGUF)                        | 中英   |     ❌️     | 2-Bit 量化 3.99 GiB <br> 3-bit 量化 4.43 GiB - 5.28 GiB <br> 4-bit 量化 5.3 GiB - 5.51 GiB <br> 5-bit 量化 6.69 GiB <br> 6-bit 量化 8.26 GiB <br> 8-bit 量化 9.99 GiB|
 
 > [!NOTE]
 >
@@ -119,6 +120,7 @@ $env:HF_ENDPOINT = "https://hf-mirror.com"
 > 5. [DeepSeek-R1-Distill-Llama-8B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B) 支持双卡推理，但是存在语句异常中断问题，原因不详。
 > 6. [DeepSeek-R1-Distill-Qwen-14B](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B) 支持双卡推理，但是其显存已经超出两张 NVIDIA GeForce RTX 4090 的极限。
 > 7. [Ollama](https://github.com/ollama/ollama) 确保本机已安装并启动 **Ollama 服务**。
+> 8. [legraphista/glm-4-9b-chat-GGUF](https://huggingface.co/legraphista/glm-4-9b-chat-GGUF) 是基于 [THUDM/GLM-4](https://github.com/THUDM/GLM-4) 的量化模型版本，因此除了本项目启动时需要设置模型 id 以外，其他项目例如 [ZerolanLiveRobot](https://github.com/AkagawaTsurunaki/ZerolanLiveRobot) 完全继承了 [THUDM/GLM-4](https://github.com/THUDM/GLM-4) 的接口。
 
 ---
 
@@ -696,6 +698,47 @@ pymilvus.exceptions.MilvusException: <MilvusException: (code=100, message=Can no
 ```
 
 这代表连接成功。
+
+---
+
+### 防御模型
+
+提示词注入攻击通过插入或修改提示来操纵语言模型，从而触发有害或非预期响应。防御模型旨在通过检测这些恶意干预，来增强语言模型应用程序的安全性。
+
+| 模型名称                                                                                                                                                                        | 支持语言 | 显存占用    |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+| [protectai/deberta-v3-base-prompt-injection-v2](https://huggingface.co/protectai/deberta-v3-base-prompt-injection-v2?text=111) | 中英 | 738 MB |
+
+> [!NOTE]
+>
+> 1. [protectai/deberta-v3-base-prompt-injection-v2](https://huggingface.co/protectai/deberta-v3-base-prompt-injection-v2?text=111) 不建议使用此扫描器检查包含自行设计的系统提示词的内容，因为它会产生较高概率的**误报 (false-positives)**。
+
+---
+
+使用以下命令创建 [protectai/deberta-v3-base-prompt-injection-v2](https://huggingface.co/protectai/deberta-v3-base-prompt-injection-v2?text=111) 的环境并启动模型。
+
+如果使用 `uv`，运行：
+
+```shell
+cd defense/deberta
+uv sync
+source .venv/bin/activate
+cd ../../
+uv run starter.py defense
+```
+
+如果使用 `Anaconda`，运行：
+
+```shell
+cd defense/deberta
+conda create --name deberta python==3.11 --yes
+conda activate deberta
+pip install -e .
+cd ../../
+python starter.py defense
+```
+
+---
 
 ## License
 
