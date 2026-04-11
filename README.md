@@ -778,6 +778,26 @@ EOF
 ## Contributors
 
 <!-- readme: contributors -start -->
+<table>
+	<tbody>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/AkagawaTsurunaki">
+                    <img src="https://avatars.githubusercontent.com/u/104302166?v=4" width="100;" alt="AkagawaTsurunaki"/>
+                    <br />
+                    <sub><b>赤川鶴鳴</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/sllying">
+                    <img src="https://avatars.githubusercontent.com/u/80552379?v=4" width="100;" alt="sllying"/>
+                    <br />
+                    <sub><b>SLLYING</b></sub>
+                </a>
+            </td>
+		</tr>
+	<tbody>
+</table>
 <!-- readme: contributors -end -->
 
 ## License
