@@ -8,6 +8,7 @@ dependencies = [
     "funasr==1.1.4",
     "loguru>=0.7.3",
     "numpy==1.26.4",
+    "pydub>=0.25.1",
     "torch==2.3.1",
     "torchaudio==2.3.1",
     "zerolan-data",
