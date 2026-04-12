@@ -80,7 +80,7 @@ class SpeechParaformerModel:
     def _wrapper(self, wave_nparray: np.ndarray, is_final: bool) -> ASRPrediction | None:
         assert wave_nparray is not None and isinstance(wave_nparray, np.ndarray), "Wrong format."
         assert len(wave_nparray) > 0, "The audio tensor size must be greater than 0."
-        assert len(wave_nparray.shape) == 1, "The audio must be mono."
+        assert len(wave_nparray.shape) == 1, f"The audio must be mono, now get {wave_nparray.shape}."
         assert wave_nparray.dtype == np.float32, "The dtype type that is not supported, must be numpy.float32."
         try:
             res = self._model.generate(input=wave_nparray, cache=self._cache, is_final=is_final,
