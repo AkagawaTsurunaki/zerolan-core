@@ -34,7 +34,6 @@ class LLMApplication(AbstractApplication):
 
         @self._app.route("/llm/stream-predict", methods=["POST"])
         def handle_stream_predict():
-            # TODO: Will change in the later version.
             llm_query = self._to_pipeline_format()
 
             def generate_output(q: LLMQuery):
@@ -47,7 +46,7 @@ class LLMApplication(AbstractApplication):
             return Response(
                 stream_with_context(generate_output(llm_query)),
                 mimetype='application/json',
-                headers={'Content-Type': 'application/json; charset=utf-8'}
+                headers={'Content-Type': 'application/x-ndjson'}
             )
 
     def _to_pipeline_format(self) -> LLMQuery:
