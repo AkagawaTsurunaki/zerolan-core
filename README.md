@@ -688,7 +688,7 @@ uv sync
 source .venv/bin/activate # Linux
 .venv\Scripts\Activate.ps1 # Windows
 cd ../../
-uv run starter.py vecdb
+uv run starter.py vecdb --db milvus
 
 ```
 
