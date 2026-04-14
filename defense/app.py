@@ -9,7 +9,7 @@ from common.abs_model import AbstractModel
 class DefenseLLMApplication(AbstractApplication):
 
     def __init__(self, model: AbstractModel, host: str, port: int):
-        super().__init__(model, "llm")
+        super().__init__(model, "defense")
         self.host = host
         self.port = port
         self._app = Flask(__name__)
