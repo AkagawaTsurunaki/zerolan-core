@@ -67,28 +67,6 @@ LLM:
 
 `model_path` 是模型的地址，严格来说是一个路径。默认配置下，会尝试从 HuggingFace 模型仓库下载模型
 
-当你在运行时，如果发现过了一段时间后出现报错信息，例如
-
-```
-MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: ...
-```
-
-这是由于部分地区连接 HuggingFace 存在困难，你可以选择配置环境变量。
-
-Linux 设置环境变量：
-
-```shell
-export HF_ENDPOINT=https://hf-mirror.com
-```
-
-Windows 设置环境变量：
-
-```shell
-$env:HF_ENDPOINT = "https://hf-mirror.com"
-```
-
-如果使用镜像也无法下载，您可能需要自行探究方法手动访问官方仓库，下载模型，并在 `config.yaml` 中设置模型地址（目录）。
-
 剩下的选项因模型而异，详细可以看配置文件中的内容，如果你不知道怎么改，就保持默认配置，因为这些配置经过了测试确实可用。
 
 ## 支持集成模型
@@ -827,6 +805,32 @@ EOF
 ```
 
 返回内容应该包含 `"defense_result": "injection", "confidence": 0.9999990463256836` 字样，这表示模型检测到了潜在的提示词注入风险。
+
+## 常见问题
+
+### 无法连接到 HuggingFace
+
+当你在运行时，如果发现过了一段时间后出现报错信息，例如
+
+```
+MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: ...
+```
+
+这是由于部分地区连接 HuggingFace 存在困难，你需要使用镜像，可以选择配置环境变量。通常要在运行服务之前运行下面的命令。
+
+Linux 设置环境变量：
+
+```shell
+export HF_ENDPOINT=https://hf-mirror.com
+```
+
+Windows 设置环境变量：
+
+```shell
+$env:HF_ENDPOINT = "https://hf-mirror.com"
+```
+
+如果使用镜像也无法下载，您可能需要自行探究方法手动访问官方仓库，下载模型，并在 `config.yaml` 中设置模型地址（目录）。
 
 ---
 
