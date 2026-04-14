@@ -450,15 +450,58 @@ curl -X POST http://localhost:11001/asr/predict \
 > 
 > 1. [GPT-SoVITS](https://github.com/AkagawaTsurunaki/GPT-SoVITS) 的安装教程请参考官方 `README.md`，请注意必须是[此 Forked 版本](https://github.com/AkagawaTsurunaki/GPT-SoVITS)才能与本项目的接口适配。**不要使用官方的整合包，因为接口实现与本项目不匹配。**
 
-关于 GPT-SoVITS 详细的启动方法如下。
+关于 GPT-SoVITS 详细的启动方法如下：
 
-首先将项目克隆下来，切换到 `zerolan` 分支
+1. 将项目克隆下来，切换到 `zerolan` 分支，然后安装对应的依赖。
 
-```shell
+```
 git clone https://github.com/AkagawaTsurunaki/GPT-SoVITS.git
 cd GPT-SoVITS
-# 假设你已经按照 GPT-SoVITS 官方的 README.md 配置好了环境（步骤比较多，请保持耐心）
+git checkout zerolan
+```
+
+如果使用 `uv`
+
+```shell
+uv sync
+```
+
+如果使用 `Anaconda`。注意不是 `environment.yml` 也不是 `requirements.txt`，而是 `environment.yaml`，运行：
+
+```shell
+conda create --name gpt_sovits --file environment.yaml
+```
+
+2. 我们需要手动下载预训练模型。[点击此处](https://www.icloud.com/iclouddrive/0b0GNJ8KSMxOcwdN9_jClPQzQ#pretrained_models) 下载预训练模型的压缩包 `pretrained_models.zip`，解压后放到 `GPT_SoVITS/pretrained_models` 下。请注意路径名，GPT_SoVITS 不是项目目录本身，而是项目目录下的一个文件夹。你也可以在 GPT-SoVITS 项目目录（不是 zerolan-core）运行下列命令
+
+```shell
+unzip pretrained_models.zip
+mv pretrained_models GPT_SoVITS/pretrained_models
+```
+
+3. 中文 TTS 需要使用 G2PWModel，[点击此处](https://www.modelscope.cn/models/XXXXRT/GPT-SoVITS-Pretrained/resolve/master/G2PWModel.zip)下载，解压 `G2PWModel.zip` 然后把 `G2PWModel` 放到 GPT_SoVITS/text 目录下。你也可以在 GPT-SoVITS 项目目录（不是 zerolan-core）运行下列命令
+
+```shell
+axel -n 10 https://www.modelscope.cn/models/XXXXRT/GPT-SoVITS-Pretrained/resolve/master/G2PWModel.zip # 多线程下载，换成别的也行
+unzip G2PWModel.zip
+mv G2PWModel GPT_SoVITS/text/G2PWModel
+```
+
+4. [点击此处](https://www.icloud.com/iclouddrive/079Bx3QbEosu8XIDkjim_ixPw#nltk_data) 下载 NTLK 数据，解压后把 `nltk_data` 文件夹放到用户目录下。
+
+5. 运行下列命令运行 GPT-SoVITS 的 API 服务（请确保当前工作目录是 GPT-SoVITS 的项目根目录）
+
+如果使用 `Anaconda`
+
+```shell
+conda activate gpt_sovits
 python zerolan_api.py -a 127.0.0.1 -p 11004
+```
+
+如果使用 `uv`
+
+```shell
+uv run zerolan_api.py -a 127.0.0.1 -p 11004
 ```
 
 需要下载 nltk_data
