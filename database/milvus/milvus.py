@@ -77,9 +77,10 @@ class MilvusApplication:
         self.host = host
         self.port = port
         self._app = Flask(__name__)
-        self._app.add_url_rule(rule="/milvus/insert",
+        # NOTE: Since 2.0.0, /milvus is deprecated, use /db/milvus instead
+        self._app.add_url_rule(rule="/db/milvus/insert",
                                view_func=self._handle_insert, methods=["POST"])
-        self._app.add_url_rule(rule="/milvus/search",
+        self._app.add_url_rule(rule="/db/milvus/search",
                                view_func=self._handle_search, methods=["POST"])
 
         self._database = database
