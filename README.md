@@ -65,7 +65,15 @@ LLM:
 
 因为你选择了 `Qwen/Qwen-7B-Chat` 所以只需要修改你启动的那个模型的配置就行了（不启用的模型不用管）。
 
-`model_path` 是模型的地址，严格来说是一个路径。默认配置下，会尝试从 HuggingFace 模型仓库下载模型，由于部分地区连接 HuggingFace 存在困难，你可以选择配置环境变量。
+`model_path` 是模型的地址，严格来说是一个路径。默认配置下，会尝试从 HuggingFace 模型仓库下载模型
+
+当你在运行时，如果发现过了一段时间后出现报错信息，例如
+
+```
+MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: ...
+```
+
+这是由于部分地区连接 HuggingFace 存在困难，你可以选择配置环境变量。
 
 Linux 设置环境变量：
 
